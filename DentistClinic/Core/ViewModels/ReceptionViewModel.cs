@@ -24,7 +24,8 @@ namespace DentistClinic.Core.ViewModels
 		[StringLength(100, ErrorMessage = Errors.passwordLengthMSG, MinimumLength = 6)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
-		public string Password { get; set; } = null!;
+        [RegularExpression(@".*[a-z]+.*", ErrorMessage = "Password must has at lease one lowercase char")]
+        public string Password { get; set; } = null!;
 
 	}
 }
