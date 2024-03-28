@@ -17,7 +17,7 @@
                     <div class="form-floating mb-2">
                         <select class="form-select form-select-solid js-select2" asp-items="@Model.XraysSelect" asp-for="@Model.XrayId" data-placeholder="Select a Xray">
                         </select>
-                        <label class="form-label" asp-for="@Model.XrayId"></label>
+                        <label class="form-label" asp-for="@Model.XrayId">Xray Name</label>
                     </div>
                     <span class="text-danger d-block" asp-validation-for="@Model.XrayId"></span>
                 </div>

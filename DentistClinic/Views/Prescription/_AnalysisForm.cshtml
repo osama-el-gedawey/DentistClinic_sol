@@ -17,7 +17,7 @@
                     <div class="form-floating mb-2">
                         <select class="form-select form-select-solid js-select2" asp-items="@Model.AnalysisSelect" asp-for="@Model.AnalysisId" data-placeholder="Select a Analysis">
                         </select>
-                        <label class="form-label" asp-for="@Model.AnalysisId"></label>
+                        <label class="form-label" asp-for="@Model.AnalysisId">Analysis Name</label>
                     </div>
                     <span class="text-danger d-block" asp-validation-for="@Model.AnalysisId"></span>
                 </div>

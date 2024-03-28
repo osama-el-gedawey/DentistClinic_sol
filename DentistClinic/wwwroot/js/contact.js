@@ -32,7 +32,7 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            const targetRaw = deleteBtn.closeset("tr");
+                            const targetRaw = deleteBtn.closest("tr");
                             datatable.row(targetRaw).remove().draw();
                             $(targetRaw).remove();
                             //remove it from datatable

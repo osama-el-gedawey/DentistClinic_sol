@@ -201,7 +201,8 @@ namespace DentistClinic.Controllers
         public IActionResult CreateMedicine(int id)
         {
             //Medicines
-            var medicines = _unitOfWork.medicineRepository.GetAll().Where(x => !x.IsDeleted).ToList();
+            var medicines = _unitOfWork.medicineRepository.GetAll().Where(x => !x.IsDeleted)
+                .Select(x => new { Id = x.Id, Name =$"{x.Name} : {x.Type}"}).ToList();
             MedicinePrescriptionViewModel vmodel = new MedicinePrescriptionViewModel();
             vmodel.PrescriptionId = id;
 
@@ -273,7 +274,8 @@ namespace DentistClinic.Controllers
         public IActionResult CreateAnalysis(int id)
         {
             //Analysis
-            var analysis = _unitOfWork.analysisRepository.GetAll().Where(x => !x.IsDeleted).ToList();
+            var analysis = _unitOfWork.analysisRepository.GetAll().Where(x => !x.IsDeleted)
+                .Select(x => new { Id = x.Id, Name = $"{x.Name} : {x.Type}" }).ToList();
             AnalysisPrescriptionViewModel vmodel = new AnalysisPrescriptionViewModel();
             vmodel.PrescriptionId = id;
 
@@ -520,7 +522,8 @@ namespace DentistClinic.Controllers
         public IActionResult CreateXray(int id)
         {
             //Xrays
-            var xrays = _unitOfWork.xrayRepository.GetAll().Where(x => !x.IsDeleted).ToList();
+            var xrays = _unitOfWork.xrayRepository.GetAll().Where(x => !x.IsDeleted)
+                .Select(x => new { Id = x.Id, Name = $"{x.Name} : {x.Type}" }).ToList();
             XrayPrescriptionViewModel vmodel = new XrayPrescriptionViewModel();
             vmodel.PrescriptionId = id;
 
