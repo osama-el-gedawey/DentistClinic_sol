@@ -80,11 +80,13 @@ namespace DentistClinic.Areas.Identity.Pages.Account
             [Required]
             [StringLength(20, ErrorMessage = Errors.usernameLengthMSG, MinimumLength = 3)]
             [Display(Name = "First Name")]
+            [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Name must be letters only")]
             public string FirstName { get; set; }
 
             [Required]
             [StringLength(20, ErrorMessage = Errors.usernameLengthMSG, MinimumLength = 3)]
             [Display(Name = "Last Name")]
+            [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Name must be letters only")]
             public string LastName { get; set; }
 
             [Required]
