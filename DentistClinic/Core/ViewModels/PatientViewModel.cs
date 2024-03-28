@@ -30,7 +30,7 @@ namespace DentistClinic.Core.ViewModels
         public string Gender { get; set; } = null!;
         [Required]
         [Display(Name = "Birth Date")]
-        public DateTime BirthDate { get; set; } = DateTime.Now;
+        public DateTime BirthDate { get; set; } = new DateTime(2010, 1, 1);
         [Required]
         [Display(Name = "Occuopation")]
         public string Occupation { get; set; } = null!;

@@ -2,9 +2,10 @@
 $(document).ready(function () {
 
     //Configure FlatePicker
+    var maxYear = (new Date().getFullYear() - 2);
     $(".patient-birthdate").flatpickr({
         dateFormat: "Y-m-d",
-        maxDate: "today"
+        maxDate: `${maxYear}-01-01`,
     });
 
 
