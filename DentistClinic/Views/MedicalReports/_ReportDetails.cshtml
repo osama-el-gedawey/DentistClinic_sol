@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.WebUtilities
+@model MedicalReportViewModel;
+
+<!--begin::Card body-->
+<div class="card-body py-2">
+    <!--begin::Header-->
+    <div class="d-flex flex-stack mb-3">
+        <!--begin::Badge-->
+        <div class="badge badge-@((Model.EndDate == null) ? "danger" : "success")">@((Model.EndDate == null) ? "Not Recovered" : "Recovered")</div>
+        <!--end::Badge-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Title-->
+    <div class="mb-2" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
+        <a href="#" class="fs-4 fw-bold mb-1 text-gray-900 text-hover-primary">@Model.Name</a>
+    </div>
+    <!--end::Title-->
+    <!--begin::Stats-->
+    <div class="d-flex flex-column my-1">
+        <!--begin::Stat-->
+        <div class="border border-dashed border-gray-300 mb-2 rounded d-flex flex-column align-items-start justify-content-center py-2 px-3">
+            <p class="mb-1 fw-semibold text-muted">Start Date</p>
+            <div class="dateS">
+                <i class="fa-regular fa-calendar"></i>
+                <span class="mx-2">@((Model.StartDate == null) ? "Unknown" : Model.StartDate.ToString())</span>
+            </div>
+        </div>
+        <!--end::Stat-->
+        <!--begin::Stat-->
+        <div class="border border-dashed border-gray-300 mb-2 rounded d-flex flex-column align-items-start justify-content-center py-2 px-3">
+            <p class="mb-1 fw-semibold text-muted">End Date</p>
+            <div class="dateS">
+                <i class="fa-regular fa-calendar"></i>
+                <span class="mx-2">@((Model.EndDate == null) ? "Unknown" : Model.EndDate.ToString())</span>
+            </div>
+        </div>
+        <!--end::Stat-->
+    </div>
+    <!--end::Stats-->
+    <!--begin::Footer-->
+    <div class="d-flex flex-stack flex-wrapr">
+
+        <!--begin::Users-->
+        <div class="symbol-group symbol-hover my-1 gallery-grid">
+            @if (Model.Documentations?.Count() > 0)
+            {
+                for (int i = 0; i < Model.Documentations?.Count(); i++)
+                {
+                    <!--begin::Overlay-->
+                    <a class="gallery-img-link" data-card="card-@Model.Id" data-index=@i>
+                        <!--begin::Image-->
+                        <div class="symbol symbol-35px" data-bs-toggle="tooltip" title="documentation">
+                            <img alt="documentation" class="documentation-img card-@Model.Id" src="data:image /*;base64,@(Convert.ToBase64String(Model.Documentations[i]))" />
+                        </div>
+                        <!--end::Image-->
+                    </a>
+                }
+
+            }
+            else
+            {
+                <div class="symbol symbol-35px" data-bs-toggle="tooltip" title="no documentation">
+                    <img alt="Pic" src="~/assets/images/No_Image_Available.jpg" />
+                </div>
+            }
+        </div>
+        <!--end::Users-->
+    </div>
+    <!--end::Footer-->
+    <!--begin::solid autosize textarea-->
+    <div class="rounded border d-flex flex-column p-1 my-4">
+        <textarea class="form-control form-control form-control-solid disabled" readonly="readonly" disabled asp-for="Notes" data-kt-autosize="true"></textarea>
+    </div>
+    <!--end::solid autosize textarea-->
+</div>
+<!--end::Card body-->
+

@@ -1,0 +1,173 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="box-page" style="background: linear-gradient(0deg, rgba(51, 53, 72, 0.05), rgba(51, 53, 72, 0.05)), #FFFFFF;">
+    <div class="container" style="padding-top:90px; padding-bottom:180px;">
+        <div class="row">
+            <div class="col-lg-6 login-wrap">
+                <div class="login-sec">
+                    <div class="log-img" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <img class="img-fluid" src="https://images.pexels.com/photos/3845843/pexels-photo-3845843.jpeg" alt="Register" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="login-container p-5" style="border-radius:15px; background-color:#FFF;box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
+                        <div class="login-header">
+                            <div class="center-logo text-center">
+                                <h3 class="m-0 text-primary"><i class="fa fa-tooth me-2"></i>BHNS Dental Clinic </h3>
+                            </div>
+                            <h4 class="text-muted py-4">Create Your Account</h4>
+                        </div>
+                        <form id="registrationForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa fa-user text-primary"></i></span>
+                                        <input type="text" class="form-control bg-light required" style="border-radius:5px;" placeholder="First Name" asp-for="Input.FirstName">
+                                    </div>
+                                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa fa-user text-primary"></i></span>
+                                        <input type="text" class="form-control bg-light required" style="border-radius:5px;" placeholder="Last Name" asp-for="Input.LastName">
+                                    </div>
+                                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa fa-venus-mars text-primary"></i></span>
+                                        <select class="form-select bg-light required" style="border-radius:5px;" asp-for="Input.Gender">
+                                            <option selected disabled value="">Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female" >Female</option>
+                                        </select>
+                                    </div>
+                                    <span asp-validation-for="Input.Gender" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa fa-calendar text-primary"></i></span>
+                                        <input type="date" class="form-control bg-light birthdate-register" style="border-radius:5px;" placeholder="Date of Birth" asp-for="Input.Birthdate">
+                                    </div>
+                                    <span asp-validation-for="Input.Birthdate" class="text-danger"></span>
+@*                                     <span class="text-danger" id="birthdate-validation-error"></span> 
+ *@
+                                </div>
+                            </div>
+                           
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa fa-envelope text-primary"></i></span>
+                                    <input type="text" class="form-control bg-light" style="border-radius:5px;" placeholder="Email" asp-for="Input.Email">
+                                </div>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa fa-phone text-primary"></i></span>
+                                    <input type="tel" class="form-control bg-light" style="border-radius:5px;" placeholder="Phone Number" asp-for="Input.PhoneNumber">
+                                </div>
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa fa-briefcase text-primary"></i></span>
+                                    <input type="text" class="form-control bg-light" style="border-radius:5px;" placeholder="Occupation" asp-for="Input.Occuopation">
+                                </div>
+                                <span asp-validation-for="Input.Occuopation" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa fa-address-card text-primary"></i></span>
+                                    <textarea class="form-control bg-light" style="border-radius:5px;" placeholder="Address" rows="3" asp-for="Input.Address"></textarea>
+                                </div>
+                                <span asp-validation-for="Input.Address" class="text-danger"></span>
+                            </div>
+                        
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-light"><i class="fa fa-lock text-primary"></i></span>
+                                    <input type="password" class="form-control bg-light required" style="border-radius:5px;" id="password" asp-for="Input.Password" placeholder="Password">
+                                    <button class="btn btn-primary" type="button" id="togglePassword">
+                                        <i class="fa fa-eye"></i> <!-- Eye icon for password visibility -->
+                                    </button>
+                                </div>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-light"><i class="fa fa-lock text-primary"></i></span>
+                                    <input type="password" class="form-control bg-light required" style="border-radius:5px;" id="confirmPassword" asp-for="Input.ConfirmPassword" placeholder="Confirm Password">
+                                    <button class="btn btn-primary" type="button" id="togglePasswordConfirm">
+                                        <i class="fa fa-eye"></i> <!-- Eye icon for confirm password visibility -->
+                                    </button>
+                                </div>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="input-block login-btn text-center">
+                                <button class="btn btn-primary btn-block w-100" type="submit">Register</button>
+                            </div>
+                        </form>
+                        <br />
+                        <div class="next-sign d-flex justify-content-center">
+                            <p class="account-subtitle text-center">Already have an account? <a asp-page="/Account/Login">Login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Function to toggle password visibility
+        function togglePasswordVisibility(inputId, buttonId) {
+            var passwordInput = document.getElementById(inputId);
+            var button = document.getElementById(buttonId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                button.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to hide password
+            } else {
+                passwordInput.type = "password";
+                button.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon to show password
+            }
+        }
+
+        // Event listeners for toggling password visibility
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            togglePasswordVisibility("password", "togglePassword");
+        });
+
+        document.getElementById("togglePasswordConfirm").addEventListener("click", function () {
+            togglePasswordVisibility("confirmPassword", "togglePasswordConfirm");
+        });
+
+        var maxYear = (new Date().getFullYear() - 2)
+
+        $(".birthdate-register").flatpickr({
+            dateFormat: "Y-m-d",
+            maxDate: `${maxYear}-01-01`,
+        });
+    </script>
+}
+
+
+

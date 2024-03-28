@@ -1,0 +1,59 @@
+﻿@model Analysis
+@{
+    ViewData["Title"] = "Edit Analysis";
+}
+
+
+<div class="card shadow-sm">
+    <!--Begin Card::Header-->
+    <div class="card-header">
+        <h5 class="align-self-center m-0">Add Analysis</h5>
+    </div>
+    <!--End Card::Header-->
+    <!--Begin Card::Body-->
+    <div class="card-body">
+        <form id="AnalysisForm" method="post" asp-controller="Analysis">
+            <input asp-for="IsDeleted" hidden />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <input class="form-control form-control-solid" asp-for="Name" placeholder="Name..." />
+                            <label class="form-label" asp-for="Name"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="Name"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <select class="form-select form-select-solid js-select2" data-control="select2" data-placeholder="Select Type" data-hide-search="true" asp-for="Type">
+                                <option value="">Select Analysis</option>
+                                <option value="Dental">Dental</option>
+                                <option value=" Non-Dental"> Non-Dental</option>
+                            </select>
+                            <label class="form-label" asp-for="Type"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="Type"></span>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <!--End Card::Body-->
+    <!--Begin Card::Footer-->
+    <div class="card-footer py-2">
+        <button type="submit" class="btn-sm btn btn-primary me-2" form="AnalysisForm">
+            <span class="indicator-label">
+                Save
+            </span>
+            <span class="indicator-progress">
+                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+            </span>
+        </button>
+        <a class="btn btn-lignt text-primary" asp-action="Index">Cancel</a>
+    </div>
+    <!--End Card::Footer-->
+</div>

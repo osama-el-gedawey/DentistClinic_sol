@@ -1,0 +1,210 @@
+﻿
+@model TreatmentPlansViewModel;
+<form id="TplanForm" asp-controller="TPlans" asp-action=@(Model.Id == null ? "Create" : "Update") 
+        data-ajax-method="post" 
+        data-ajax="true"
+      data-ajax-begin="onRequestBegin" 
+      data-ajax-success="onRequestSuccess" 
+      data-ajax-failure="onRequestFailure" 
+      data-ajax-complete="onRequestComplete" enctype="multipart/form-data">
+    <div class="row">
+        <input type="hidden" asp-for="@Model.Id"/>
+        <input type="hidden" asp-for="@Model.PatientId"/>
+        <div class="col-12 my-3">
+            <div class="mb-3">
+                <img src="~/assets/images/Tooth.png" alt="tooth" width="100%" />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <select class="form-select form-select-solid js-select2" asp-for="@Model.Name" data-placeholder="Select a Type">
+                        <option value="">Select a Type</option>
+                        <optgroup label="Diagnosis:">
+                            <option>Regular Check-up</option>
+                        </optgroup>
+                        <optgroup label="Operative:">
+                            <option>Restoration Class I</option>
+                            <option>Restoration Class II</option>
+                            <option>Restoration Class III</option>
+                            <option>Restoration Class IV</option>
+                            <option>Restoration Class V</option>
+                            <option>Restoration Class VI</option>
+                        </optgroup>
+                        <optgroup label="Endodontics:">
+                            <option>Anterior</option>
+                            <option>Pre-Molar</option>
+                            <option>Molar</option>
+                        </optgroup>
+                        <optgroup label="Orthodontics:">
+                            <option>Orthodontics Regular Check-up</option>
+                            <option>Orthodontic Treatment</option>
+                        </optgroup>
+                        <optgroup label="Pedodontics:">
+                            <option>Pulpotomy</option>
+                            <option>Stainless Steel Crown</option>
+                            <option>Zirconia Crown</option>
+                            <option>Extraction</option>
+
+                        </optgroup>
+                        <optgroup label="Fixed Prosthodontics:">
+                            <option>PFM Crown</option>
+                            <option>VM13 Crown</option>
+                            <option>Zirconia Crown</option>
+                            <option>Bridge</option>
+                            <option>Long Span Bridge</option>
+                        </optgroup>
+                        <optgroup label="Removable Prosthodontics:">
+                            <option>Acrylic Single Unit</option>
+                            <option>Soft Acrylic Single Unit</option>
+                            <option>Flexible Single Unit</option>
+                            <option>Vitalium Single Unit</option>
+                            <option>Complete Arch Acrylic</option>
+                            <option>Complete Arch Flexible</option>
+                            <option>Snap-on</option>
+                        </optgroup>
+                        <optgroup label="Surgery:">
+                            <option>Simple Extraction</option>
+                            <option>Wisdom Extraction</option>
+                            <option>Separation Extraction</option>
+                            <option>Impacted Extraction</option>
+                            <option>Suturing</option>
+                            <option>Sinus Elevation</option>
+                        </optgroup>
+                        <optgroup label="Implant:">
+                            <option>Implant Regular Check-up</option>
+                            <option>Implant</option>
+                        </optgroup>
+                        <optgroup label="Periodontics:">
+                            <option>Scaling</option>
+                            <option>Polishing</option>
+                            <option>Pockets Debridement</option>
+                            <option>Perio-surgery</option>
+                        </optgroup>
+
+                    </select>
+                    <label class="form-label" asp-for="@Model.Name"></label>
+                </div>
+                <span class="text-danger d-block" asp-validation-for="@Model.Name"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <select class="form-select form-select-solid js-select2" asp-for="@Model.Teeth" data-placeholder="Select Teeth">
+                        <option value="">Select Teeth</option>
+                        <optgroup label="Upper-Right:">
+                            <option value="UR1">UR1</option>
+                            <option value="UR2">UR2</option>
+                            <option value="UR3">UR3</option>
+                            <option value="UR4">UR4</option>
+                            <option value="UR5">UR5</option>
+                            <option value="UR6">UR6</option>
+                            <option value="UR7">UR7</option>
+                            <option value="UR8">UR8</option>
+
+                        </optgroup>
+                        <optgroup label="Upper-Left:">
+                            <option value="UL1">UL1</option>
+                            <option value="UL2">UL2</option>
+                            <option value="UL3">UL3</option>
+                            <option value="UL4">UL4</option>
+                            <option value="UL5">UL5</option>
+                            <option value="UL6">UL6</option>
+                            <option value="UL7">UL7</option>
+                            <option value="UL8">UL8</option>
+                        </optgroup>
+
+                        <optgroup label="Lower-Right:">
+                            <option value="LR1">LR1</option>
+                            <option value="LR2">LR2</option>
+                            <option value="LR3">LR3</option>
+                            <option value="LR4">LR4</option>
+                            <option value="LR5">LR5</option>
+                            <option value="LR6">LR6</option>
+                            <option value="LR7">LR7</option>
+                            <option value="LR8">LR8</option>
+                        </optgroup>
+
+                        <optgroup label="Lower-Left:">
+                            <option value="LL1">LL1</option>
+                            <option value="LL2">LL2</option>
+                            <option value="LL3">LL3</option>
+                            <option value="LL4">LL4</option>
+                            <option value="LL5">LL5</option>
+                            <option value="LL6">LL6</option>
+                            <option value="LL7">LL7</option>
+                            <option value="LL8">LL8</option>
+                        </optgroup>
+                        <optgroup label="Pedo Upper-Right:">
+                            <option value="PedoUR_A">UR_A</option>
+                            <option value="PedoUR_B">UR_B</option>
+                            <option value="PedoUR_C">UR_C</option>
+                            <option value="PedoUR_D">UR_D</option>
+                            <option value="PedoUR_E">UR_E</option>
+                        </optgroup>
+
+                        <optgroup label="Pedo Upper-Left:">
+                            <option value="PedoUL_A">UL_A</option>
+                            <option value="PedoUL_B">UL_B</option>
+                            <option value="PedoUL_C">UL_C</option>
+                            <option value="PedoUL_D">UL_D</option>
+                            <option value="PedoUL_E">UL_E</option>
+                        </optgroup>
+
+                        <optgroup label="Pedo Lower-Right:">
+                            <option value="PedoLR_A">LR_A</option>
+                            <option value="PedoLR_B">LR_B</option>
+                            <option value="PedoLR_C">LR_C</option>
+                            <option value="PedoLR_D">LR_D</option>
+                            <option value="PedoLR_E">LR_E</option>
+                        </optgroup>
+                        <optgroup label="Pedo Lower-Left:">
+                            <option value="PedoLL_A">LL_A</option>
+                            <option value="PedoLL_B">LL_B</option>
+                            <option value="PedoLL_C">LL_C</option>
+                            <option value="PedoLL_D">LL_D</option>
+                            <option value="PedoLL_E">LL_E</option>
+                        </optgroup>
+                    </select>
+                    <label class="form-label" asp-for="Teeth"></label>
+                </div>
+                <span class="text-danger d-block" asp-validation-for="SelectedTeeth"></span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <input type="date" class="form-control form-control-solid tplan-sdate" asp-for="@Model.StartDate" placeholder="start date..." />
+                    <label class="form-label" asp-for="@Model.StartDate"></label>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <input type="date" class="form-control form-control-solid tplan-edate" asp-for="@Model.EndDate" placeholder="end date..." />
+                    <label class="form-label" asp-for="@Model.EndDate"></label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <textarea class="form-control form-control-solid rounded-3" asp-for="@Model.Notes" style="height: 96px;" placeholder="report note..."></textarea>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="actions">
+                <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn btn-@(Model.Id == null ? "primary" : "warning")  me-2">
+                    <span class="indicator-label">
+                        @(Model.Id == null ? "Add" : "Edit")
+                    </span>
+                    <span class="indicator-progress">
+                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

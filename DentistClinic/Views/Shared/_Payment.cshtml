@@ -1,0 +1,29 @@
+﻿@model PaymentViewModel;
+<tr class="payment-row" data-payment="@Model.Value" data-type="@Model.Type">
+    <td>
+        <span style="display: inline-block; font-weight: 500; color: #444; padding: 5px 10px; background-color: #FFF; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; ">
+            @Model.Date.ToString("MMMM dd, yyyy")
+        </span>
+    </td>
+    <td>@Model.Type</td>
+    <td>
+        @if (Model.Value > 0)
+        {
+            <span style="display: inline-block; font-weight: 500; color: #444; padding: 5px 10px; background-color: #e9fdff; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; ">
+                @Model.Value <span>LE</span>
+            </span>
+        }
+        else
+        {
+            <span style="display: inline-block; font-weight: 500; color: #444; padding: 5px 10px; background-color: #ffdedb; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; ">
+                @Model.Value <span>LE</span>
+            </span>
+        }
+
+    </td>
+    <td title="@Model.Note" class="text-center d-flex justify-content-center">
+        <p style="max-width:100px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" class="text-center">
+            @((Model.Note == null) ? "No Note" : @Model?.Note?.ToString())
+        </p>
+    </td>
+</tr>

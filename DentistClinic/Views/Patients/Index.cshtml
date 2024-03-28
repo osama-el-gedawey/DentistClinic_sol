@@ -1,0 +1,291 @@
+﻿@model IEnumerable<PatientViewModel>;
+@inject UserManager<ApplicationUser> userManger;
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+    var applicationUser = await userManger.GetUserAsync(User) ?? new ApplicationUser();
+    ViewData["Title"] = "Patients";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/assets/Plugins/datatables/datatables.bundle.css" />
+}
+
+<div class="bg-light-primary border border-primary border-3 border-dashed d-flex justify-content-between rounded w-100 p-5 mb-10">
+    <div class="d-flex align-items-center">
+        <div class="symbol symbol-40px me-4">
+            <div class="symbol-label fs-2 fw-semibold">
+                <!--begin::Svg Icon | path: icons/duotune/general/gen002.svg-->
+                <span class="svg-icon svg-icon-2 svg-icon-primary">
+                    <svg width="24" height="24" viewBox="0 0 576 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M48 0C21.5 0 0 21.5 0 48V256H144c8.8 0 16 7.2 16 16s-7.2 16-16 16H0v64H144c8.8 0 16 7.2 16 16s-7.2 16-16 16H0v80c0 26.5 21.5 48 48 48H265.9c-6.3-10.2-9.9-22.2-9.9-35.1c0-46.9 25.8-87.8 64-109.2V271.8 48c0-26.5-21.5-48-48-48H48zM152 64h16c8.8 0 16 7.2 16 16v24h24c8.8 0 16 7.2 16 16v16c0 8.8-7.2 16-16 16H184v24c0 8.8-7.2 16-16 16H152c-8.8 0-16-7.2-16-16V152H112c-8.8 0-16-7.2-16-16V120c0-8.8 7.2-16 16-16h24V80c0-8.8 7.2-16 16-16zM512 272a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM288 477.1c0 19.3 15.6 34.9 34.9 34.9H541.1c19.3 0 34.9-15.6 34.9-34.9c0-51.4-41.7-93.1-93.1-93.1H381.1c-51.4 0-93.1 41.7-93.1 93.1z" fill="currentColor" />
+                    </svg>
+                </span>
+                <!--end::Svg Icon-->
+            </div>
+        </div>
+        <!--begin::Content-->
+        <div class="d-flex flex-column pe-0 pe-sm-10">
+            <h5 class="mb-1">Patients</h5>
+        </div>
+        <!--end::Content-->
+    </div>
+    <div>
+        <a class="btn btn-sm btn-primary" asp-action="Create">
+            <i class="bi bi-plus-square-dotted"></i>
+            Add
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card ">
+        @if (await userManger.IsInRoleAsync(applicationUser, "Doctor"))
+        {
+            <div class="card-header card-header-stretch justify-content-end">
+                <div class="card-toolbar">
+                    <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_pane_1">Available</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-datatable-deleted" data-bs-toggle="tab" href="#kt_tab_pane_2">Deleted</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body py-1">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel">
+                        <div>
+                            <!--Begin Card::Header-->
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <div class="d-flex align-items-center position-relative my-1">
+                                        <span class="svg-icon svg-icon-1 position-absolute ms-4">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+                                                <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14 filterSearchForAvailable" placeholder="Search by Name or Phone..." />
+                                    </div>
+                                    <div id="kt_datatable_example_1_export" class="d-none"></div>
+                                </div>
+                            </div>
+                            <!--End Card::Header-->
+                            <!--Begin Card::Body-->
+                            <div class="card-body pt-0">
+                                <div class="table-responsive">
+                                    <table id="patients" class="table table-row-dashed table-row-gray-300 gy-3 align-middle">
+                                        <thead>
+                                            <tr class="fw-bold fs-6 text-gray-800">
+                                                <th class="d-none"></th>
+                                                <th>Patient</th>
+                                                <th>Gender</th>
+                                                <th>Birthdate</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @*Data will rendered here*@
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--End Card::Body-->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel">
+                        <!--Begin Card::Header-->
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <span class="svg-icon svg-icon-1 position-absolute ms-4">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+                                            <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
+                                        </svg>
+                                    </span>
+                                    <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14 filterSearchForDeleted" placeholder="Search by Name or Phone..." />
+                                </div>
+                                <div id="kt_datatable_example_1_export" class="d-none"></div>
+                            </div>
+                        </div>
+                        <!--End Card::Header-->
+                        <!--Begin Card::Body-->
+                        <div class="card-body pt-0">
+                            <div class="table-responsive">
+                                <table id="deletedPatient" class="table table-row-dashed table-row-gray-300 gy-3 align-middle">
+                                    <thead>
+                                        <tr class="fw-bold fs-6 text-gray-800">
+                                            <th class="d-none"></th>
+                                            <th>Patient</th>
+                                            <th>Gender</th>
+                                            <th>Birthdate</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @*Data will rendered here*@
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--End Card::Body-->
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div>
+                <!--Begin Card::Header-->
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="d-flex align-items-center position-relative my-1">
+                            <span class="svg-icon svg-icon-1 position-absolute ms-4">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor"></rect>
+                                    <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor"></path>
+                                </svg>
+                            </span>
+                            <input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14 filterSearchForAvailable" placeholder="Search by Name or Phone..." />
+                        </div>
+                        <div id="kt_datatable_example_1_export" class="d-none"></div>
+                    </div>
+                </div>
+                <!--End Card::Header-->
+                <!--Begin Card::Body-->
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <table id="patients" data-authorize="true" class="table table-row-dashed table-row-gray-300 gy-3 align-middle">
+                            <thead>
+                                <tr class="fw-bold fs-6 text-gray-800">
+                                    <th class="d-none"></th>
+                                    <th>Patient</th>
+                                    <th>Gender</th>
+                                    <th>Birthdate</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*Data will rendered here*@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--End Card::Body-->
+            </div>
+        }
+
+    </div>
+    <input type="hidden" name="__RequestVerificationToken" value="@antiforgery.GetAndStoreTokens(Context).RequestToken" id="tokkenForgery" />
+</div>
+<!--Start::Appointments Modal-->
+<!-- Modal -->
+<div class="modal fade" id="reserveAppointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Reserve Appointment</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-xl-4">
+                        <div class="card mb-5 mb-xl-8" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;">
+                            <!--begin::Card body-->
+                            <div class="card-body pt-15">
+                                <!--begin::Summary-->
+                                <div class="d-flex flex-center flex-column mb-5">
+                                    <!--begin::Avatar-->
+                                    <div class="symbol symbol-100px symbol-circle mb-7">
+                                        <img class="patient-image img-thumbnail" src="~/assets/images/user.jpg" alt="image">
+                                    </div>
+                                    <!--end::Avatar-->
+                                    <!--begin::Name-->
+                                    <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1 patient-name">
+                                        
+                                    </a>
+                                    <!--end::Name-->
+                                    <!--begin::Position-->
+                                    <div class="fs-5 fw-semibold text-muted mb-6 patient-phone">
+                                       
+                                    </div>
+                                    <!--end::Position-->
+                                    <!--begin::Info-->
+                                    <div class="d-flex flex-center">
+                                        <!--begin::Stats-->
+                                        <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+                                            <div class="fs-4 fw-bold text-gray-700 text-center">
+                                                <span class="w-75px upcoming-appointments text-center">5</span>
+                                            </div>
+                                            <div class="fw-semibold text-primary">Upcomming</div>
+                                        </div>
+                                        <!--end::Stats-->
+                                        <!--begin::Stats-->
+                                        <div class="border border-gray-300 border-dashed rounded py-3 px-3 mx-4 mb-3">
+                                            <div class="fs-4 fw-bold text-gray-700 text-center">
+                                                <span class="w-50px prev-appointments text-center">10</span>
+                                            </div>
+                                            <div class="fw-semibold text-danger">Previous</div>
+                                        </div>
+                                        <!--end::Stats-->
+                                    </div>
+                                    <!--end::Info-->
+                                </div>
+                                <!--end::Summary-->
+                                <!--begin::Details content-->
+                                <div id="kt_customer_view_details" class="collapse show">
+                                    <div class="separator separator-dashed my-3"></div>
+                                    <h4>Reservations</h4>
+                                    <div class="reservedAppointments-list d-flex flex-wrap">
+                                       
+                                    </div>
+                                </div>
+                                <!--end::Details content-->
+
+                            </div>
+                            <!--end::Card body-->
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-8">
+                        <div class="date-filter">
+                            <div class="mb-3">
+                                <div class="form-floating" style="width:300px;">
+                                    <input id="DateFilter" type="date" class="form-control appointment-date-filter" name="appointment_filter" placeholder="day..." />
+                                    <label class="form-label">Date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="appointment-box d-flex flex-wrap" style="max-height:700px; overflow-y:auto;">
+                            <!--Appointment genderated here by javascript patient-->
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn-sm btn btn-primary me-2 js-reserve-appointment-patient" data-appointment="" data-patient="">
+                    <span class="indicator-label">
+                        Reserve Appointment
+                    </span>
+                    <span class="indicator-progress">
+                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End::Appointments Modal-->
+@section Scripts {
+    <script src="~/assets/Plugins/datatables/datatables.bundle.js"></script>
+    <script src="~/js/patient.js" asp-append-version="true"></script>
+}
+

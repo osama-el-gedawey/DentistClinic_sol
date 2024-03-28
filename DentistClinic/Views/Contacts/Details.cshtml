@@ -1,0 +1,68 @@
+﻿@model ContactMsgViewModel;
+@{
+    ViewData["title"] = "Message Details";
+}
+<div class="card shadow-sm">
+    <!--Begin Card::Header-->
+    <div class="card-header">
+        <div class="card-title d-flex justify-content-between align-items-center  w-100">
+            <div class="main-title d-flex justify-content-center align-items-center">
+                <div class="symbol symbol-40px me-4">
+                    <div class="symbol-label fs-2 fw-semibold">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen002.svg-->
+                        <span class="svg-icon svg-icon-2 svg-icon-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M215.4 96H144 107.8 96v8.8V144v40.4 89L.2 202.5c1.6-18.1 10.9-34.9 25.7-45.8L48 140.3V96c0-26.5 21.5-48 48-48h76.6l49.9-36.9C232.2 3.9 243.9 0 256 0s23.8 3.9 33.5 11L339.4 48H416c26.5 0 48 21.5 48 48v44.3l22.1 16.4c14.8 10.9 24.1 27.7 25.7 45.8L416 273.4v-89V144 104.8 96H404.2 368 296.6 215.4zM0 448V242.1L217.6 403.3c11.1 8.2 24.6 12.7 38.4 12.7s27.3-4.4 38.4-12.7L512 242.1V448v0c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64v0zM176 160H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-warning" asp-controller="Contacts" asp-action="Index">
+                    Back To List
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--End Card::Header-->
+    <!--Begin Card::Body-->
+    <div class="card-body">
+        <div class="profile-container">
+            <div class="message-details">
+                <div class="d-flex justify-content-between align-items-center p-5">
+                    <h2>MESSAGE DETAILS</h2>
+                    <h4>MESSAGE</h4>
+                </div>
+                <div class="p-5 mb-5">
+                    <!--begin::solid autosize textarea-->
+                    <div class="rounded border d-flex flex-column p-10">
+                        <label for="" class="form-label">Message content</label>
+                        <textarea class="form-control form-control form-control-solid" disabled data-kt-autosize="true">
+                            @Model.Message
+                        </textarea>
+                    </div>
+                    <!--end::solid autosize textarea-->
+                </div>
+                <div class="px-5">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6">
+                            <h5> Message from</h5>
+                            <p style="padding: 10px 0px;" class="text-muted">@Model.Name</p>
+                        </div>
+                        <div class="col-xl-6 col-lg-6">
+                            <h5>Email</h5>
+                            <p style="padding: 10px 0px;" class="text-muted">@Model.Email</p>
+                        </div>
+                        <div class="col-xl-6 col-lg-6">
+                            <h5>Phone</h5>
+                            <p style="padding: 10px 0px;" class="text-muted">@Model.Phone</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

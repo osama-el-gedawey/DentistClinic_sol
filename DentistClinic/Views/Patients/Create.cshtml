@@ -1,0 +1,107 @@
+﻿@model PatientViewModel;
+@{
+    ViewData["Title"] = "Create Patient";
+}
+
+<div class="card shadow-sm">
+    <!--Begin Card::Header-->
+    <div class="card-header">
+        <h5 class="align-self-center m-0">Add Patient</h5>
+    </div>
+    <!--End Card::Header-->
+    <!--Begin Card::Body-->
+    <div class="card-body">
+        <form id="PatientForm" method="post" asp-controller="Patients">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <input class="form-control form-control-solid" asp-for="FirstName" placeholder="FirstName..." />
+                            <label class="form-label" asp-for="FirstName"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="FirstName"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <input class="form-control form-control-solid" asp-for="LastName" placeholder="LastName..." />
+                            <label class="form-label" asp-for="LastName"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="LastName"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <input class="form-control form-control-solid" asp-for="PhoneNumber" placeholder="PhoneNumber..." />
+                            <label class="form-label" asp-for="PhoneNumber"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="PhoneNumber"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <input class="form-control form-control-solid patient-birthdate" asp-for="BirthDate" placeholder="BirthDate..." />
+                            <label class="form-label" asp-for="BirthDate"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="BirthDate"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <select class="form-select form-select-solid js-select2" data-control="select2" data-placeholder="Select Gender" data-hide-search="true" asp-for="Gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Child">Child</option>
+                            </select>
+                            <label class="form-label" asp-for="Gender"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="Gender"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <input class="form-control form-control-solid" asp-for="Address" placeholder="Address..." />
+                            <label class="form-label" asp-for="Address"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="Address"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <div class="form-floating mb-2">
+                            <input class="form-control form-control-solid" asp-for="Occupation" placeholder="Occupation..." />
+                            <label class="form-label" asp-for="Occupation"></label>
+                        </div>
+                        <span class="text-danger d-block" asp-validation-for="Occupation"></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--End Card::Body-->
+    <!--Begin Card::Footer-->
+    <div class="card-footer py-2">
+        <button type="submit" class="btn-sm btn btn-primary me-2" form="PatientForm">
+            <span class="indicator-label">
+                Save
+            </span>
+            <span class="indicator-progress">
+                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+            </span>
+        </button>
+        <a class="btn btn-lignt text-primary" asp-action="Index">Cancel</a>
+    </div>
+    <!--End Card::Footer-->
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/patient.js"></script>
+}

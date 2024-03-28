@@ -1,0 +1,138 @@
+﻿@model IEnumerable<AppointmentViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+@section Styles {
+	<link rel="stylesheet" href="~/assets/Plugins/datatables/datatables.bundle.css" />
+}
+
+<div class="bg-light-primary border border-primary border-3 border-dashed d-flex justify-content-between rounded w-100 p-5 mb-10">
+	<div class="d-flex align-items-center">
+		<div class="symbol symbol-40px me-4">
+			<div class="symbol-label fs-2 fw-semibold">
+				<!--begin::Svg Icon | path: icons/duotune/general/gen002.svg-->
+				<span class="svg-icon svg-icon-2 svg-icon-primary">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="none">
+						<path d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z" fill="currentColor" />
+					</svg>
+				</span>
+				<!--end::Svg Icon-->
+			</div>
+		</div>
+		<!--begin::Content-->
+		<div class="d-flex flex-column pe-0 pe-sm-10">
+			<h5 class="mb-1">Reservations</h5>
+		</div>
+		<!--end::Content-->
+	</div>
+	
+</div>
+<div class="card shadow-sm">
+	<!--Begin Card::Header-->
+	<div class="card-header">
+		<partial name="_DatatableCardHeader" />
+		<div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+			<!--begin::Export dropdown-->
+			<button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+				<i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
+				Export Report
+			</button>
+			<!--begin::Menu-->
+			<div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="copy">
+						Copy to clipboard
+					</a>
+				</div>
+				<!--end::Menu item-->
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="excel">
+						Export as Excel
+					</a>
+				</div>
+				<!--end::Menu item-->
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="csv">
+						Export as CSV
+					</a>
+				</div>
+				<!--end::Menu item-->
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="pdf">
+						Export as PDF
+					</a>
+				</div>
+				<!--end::Menu item-->
+			</div>
+			<!--end::Menu-->
+			<!--end::Export dropdown-->
+			<!--begin::Hide default export buttons-->
+			<div id="kt_datatable_example_buttons" class="d-none"></div>
+		</div>
+	</div>
+	<!--End Card::Header-->
+	<div class="card-body pt-0">
+		<div class="table-responsive">
+			<table id="kt_datatable_zero_configuration" class="js-datatables table table-row-dashed table-row-gray-300 gy-3 align-middle">
+				<thead>
+					<tr class="fw-bold fs-6 text-gray-800">
+						<th>Date</th>
+						<th>StartTime</th>
+						<th>EndTime</th>
+						<th>Status</th>
+						<th class="text-center">Patient</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var appointment in Model)
+					{
+						<tr>
+							<td>@appointment.Start.ToString("ddd dd MMM yy")</td>
+							<td>
+								<span class="badge badge-light-info">@appointment.StartTime</span>
+							</td>
+							<td>
+								<span class="badge badge-light-info">@appointment.EndTime</span>
+							</td>
+							<td>
+								@{
+									DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+									TimeOnly time = TimeOnly.FromDateTime(DateTime.Now);
+									DateTime dt1 = DateTime.Parse(appointment.Start.ToString()).Date;
+									DateTime dt2 = DateTime.Parse(today.ToString()).Date;
+									int result = DateTime.Compare(dt1, dt2);
+									if (result > 0 || (result == 0 && appointment.StartTime.CompareTo(time) >= 0))
+									{
+										<span class="badge badge-light-success">upcomming</span>
+
+									}
+									else
+									{
+										<span class="badge badge-light-danger">previous</span>
+									}
+								}
+							</td>
+							<td class="text-center">
+								<a class="text-gray-800 text-hover-primary fw-bolder mb-1" asp-controller="Patients" asp-action="Details" asp-route-id="@appointment.PatientId">
+									@appointment.Patient?.FullName
+								</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+	<!--End Card::Body-->
+</div>
+
+
+@section Scripts {
+	<script src="~/assets/Plugins/datatables/datatables.bundle.js"></script>
+}
+

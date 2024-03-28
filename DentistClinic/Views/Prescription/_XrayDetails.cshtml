@@ -1,0 +1,60 @@
+﻿@model XrayPrescriptionViewModel;
+
+<!--begin::Card body-->
+<div class="card-body py-2">
+    <!--begin::Input group-->
+    <div class="form-floating mb-5">
+        <input value="@Model.Xray?.Name" class="form-control" disabled id="name" />
+        <label for="name">Xray Name</label>
+    </div>
+    <!--end::Input group-->
+    <!--begin::Input group-->
+    <div class="form-floating mb-5">
+        <input value="@Model.Xray?.Type" class="form-control" disabled id="type" />
+        <label for="type">Xray Type</label>
+    </div>
+    <!--end::Input group-->
+    <!--begin::Input group-->
+    <div class="form-floating mb-5">
+        <input value="@Model.Cause" class="form-control" disabled id="cause" />
+        <label for="cause">Xray Cause</label>
+    </div>
+    <!--end::Input group-->
+    <!--begin::Footer-->
+    <div class="d-flex flex-stack flex-wrapr">
+
+        <!--begin::Users-->
+        <div class="symbol-group symbol-hover my-1 gallery-grid">
+            @if (Model.XrayPrescriptionImages?.Count() > 0)
+            {
+                for (int i = 0; i < Model.XrayPrescriptionImages?.Count(); i++)
+                {
+                    <!--begin::Overlay-->
+                    <a class="gallery-img-link" data-card="card-@Model.Id" data-index=@i>
+                        <!--begin::Image-->
+                        <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="documentation">
+                            <img alt="documentation" class="documentation-img card-@Model.Id" src="data:image /*;base64,@(Convert.ToBase64String(Model.XrayPrescriptionImages.ToArray()[i].Image))" />
+                        </div>
+                        <!--end::Image-->
+                    </a>
+                }
+
+            }
+            else
+            {
+                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="no documentation">
+                    <img alt="Pic" src="~/assets/images/No_Image_Available.jpg" />
+                </div>
+            }
+        </div>
+        <!--end::Users-->
+    </div>
+    <!--end::Footer-->
+    <!--begin::solid autosize textarea-->
+    <div class="rounded border d-flex flex-column p-5 my-3">
+        <label for="" class="form-label">Xray Comment</label>
+        <textarea class="form-control form-control form-control-solid" disabled asp-for="Comment" data-kt-autosize="true"></textarea>
+    </div>
+    <!--end::solid autosize textarea-->
+</div>
+<!--end::Card body-->

@@ -1,0 +1,50 @@
+﻿@model AnalysisViewModel;
+
+<form id="AnalysisForm" asp-controller="Analysis" asp-action=@(Model.Id == null ? "Create" : "Update")
+      data-ajax-method="post"
+      data-ajax="true"
+      data-ajax-begin="onRequestBegin"
+      data-ajax-success="onRequestSuccess"
+      data-ajax-failure="onRequestFailure"
+      data-ajax-complete="onRequestComplete">
+    <div class="row">
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <input class="form-control form-control-solid" asp-for="Name" placeholder="Name..." />
+                    <label class="form-label" asp-for="Name"></label>
+                </div>
+                <span class="text-danger d-block" asp-validation-for="Name"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <select class="form-select form-select-solid js-select2" asp-for="Type" data-placeholder="Select an Type">
+                        <option value="">Select Analysis</option>
+                        <option value="Dental">Dental</option>
+                        <option value="Non-Dental">Non-Dental</option>
+                    </select>
+                    <label class="form-label" asp-for="Type"></label>
+                </div>
+                <span class="text-danger d-block" asp-validation-for="Type"></span>
+            </div>
+        </div>
+        <div class="col-12 mt-5">
+            <div class="actions">
+                <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn btn-@(Model.Id == null ? "primary" : "warning")  me-2">
+                    <span class="indicator-label">
+                        @(Model.Id == null ? "Add" : "Edit")
+                    </span>
+                    <span class="indicator-progress">
+                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

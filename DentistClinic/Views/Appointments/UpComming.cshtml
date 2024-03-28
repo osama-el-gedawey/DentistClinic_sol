@@ -1,0 +1,161 @@
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@model IEnumerable<Appointment>
+@{
+   // Layout = null;
+    ViewData["Title"] = "UpComming Appointments";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/assets/Plugins/fullcalendar/fullcalendar.bundle.css" />
+}
+
+<div class="bg-light-primary border border-primary border-3 border-dashed d-flex justify-content-between rounded w-100 p-5 mb-10">
+    <div class="d-flex align-items-center">
+        <div class="symbol symbol-40px me-4">
+            <div class="symbol-label fs-2 fw-semibold">
+                <!--begin::Svg Icon | path: icons/duotune/general/gen002.svg-->
+                <span class="svg-icon svg-icon-2 svg-icon-primary">
+                    <svg width="24" height="24" viewBox="0 0 448 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zM329 305c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-95 95-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L329 305z" fill="currentColor" />
+                    </svg>
+                </span>
+                <!--end::Svg Icon-->
+            </div>
+        </div>
+        <!--begin::Content-->
+        <div class="d-flex flex-column pe-0 pe-sm-10">
+            <h5 class="mb-1">Appointments</h5>
+        </div>
+        <!--end::Content-->
+    </div>
+    <div>
+        <a class="btn btn-sm btn-primary js-automatically-appointment" href="javascript:;">
+            <i class="bi bi-plus-square-dotted"></i>
+            Add Automatically
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm p-5">
+    <div class="calender-appointments">
+        <div id="kt_docs_fullcalendar_selectable"></div>
+    </div>
+    <!--End Card::Body-->
+    <input type="hidden" name="__RequestVerificationToken" value="@antiforgery.GetAndStoreTokens(Context).RequestToken" id="tokkenForgery" />
+</div>
+
+<!--Start::Appointments Modal-->
+<!-- Modal -->
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Appointment</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="appointment-date"></p>
+                <form id="AppointmentForm" class="appointment-form">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <div class="form-floating mb-2">
+                                    <input id="AppointmentStart" type="date" class="form-control appointment-start" name="appointment_start" placeholder="appointment start..." />
+                                    <label class="form-label">Appointment Start</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <div class="form-floating mb-2">
+                                    <input id="AppointmentEnd" type="date" class="form-control appointment-end" name="appointment_end" placeholder="appointment end..." />
+                                    <label class="form-label">Appointment End</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn btn-primary me-2 js-save-appointment" form="form">
+                    Create Appointment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Automatically Modal-->
+<div class="modal fade" id="automaticallyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create Automatically Appointment</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="AppointmentAutomaticallyForm" class="appointment-automatically-form">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <div class="form-floating mb-2">
+                                    <input id="CurrentDate" type="date" class="form-control current-date" name="current_date" placeholder="current date..." />
+                                    <label class="form-label">Current Day</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <div class="form-floating mb-2">
+                                    <input id="HourStart" type="date" class="form-control hour-start" name="hour_start" placeholder="hour start..." />
+                                    <label class="form-label">Start Hour</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <div class="form-floating mb-2">
+                                    <input id="HourEnd" type="date" class="form-control hour-end" name="hour_end" placeholder="hour end..." />
+                                    <label class="form-label">End Hour</label>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <div class="form-floating mb-2">
+                                    <select class="form-select js-select2" data-control="select2" data-placeholder="Select Slot" data-hide-search="true" name="slot">
+                                        <option value="10">10</option>
+                                        <option value="20" selected>20</option>
+                                        <option value="30">30</option>
+                                        <option value="40">40</option>
+                                        <option value="50">50</option>
+                                        <option value="60">60</option>
+                                        <option value="70">70</option>
+                                        <option value="80">80</option>
+                                        <option value="90">90</option>
+                                        <option value="100">100</option>
+                                        <option value="110">110</option>
+                                        <option value="120">120</option>
+                                    </select>
+                                    <label class="form-label">Select Slot</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn btn-primary me-2 js-save-appointment-auto" form="form">
+                    Create Appointments
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End::Appointments Modal-->
+@section Scripts {
+    <script src="~/assets/Plugins/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="~/js/Appointment.js" asp-append-version="true"></script>
+}

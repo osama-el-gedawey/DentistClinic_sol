@@ -1,0 +1,127 @@
+﻿@model PaymentViewModel;
+<form id="PaymentForm" asp-controller="Payments" asp-action="Create"
+      data-ajax-method="post" 
+        data-ajax="true"
+      data-ajax-begin="onRequestBegin" 
+      data-ajax-success="onRequestSuccess" 
+      data-ajax-failure="onRequestFailure" 
+      data-ajax-complete="onRequestComplete" enctype="multipart/form-data">
+    <div class="row">
+        <input type="hidden" asp-for="@Model.PatientId" />
+        <input type="hidden" asp-for="@Model.Id"/>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <input class="form-control form-control-solid payment-date" asp-for="@Model.Date" placeholder="Date.." />
+                    <label class="form-label" asp-for="@Model.Date"></label>
+                </div>
+                <span asp-validation-for="@Model.Date" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <select class="form-select form-select-solid js-select2" asp-for="Type" data-placeholder="Select an Type">
+                        <option value="">Select</option>
+                        <optgroup label="Balance Payment:">
+                            <option>Pay</option>
+                            <option>Adjustment +ve</option>
+                            <option>Adjustment -ve</option>
+                        </optgroup>
+                        <optgroup label="Diagnosis:">
+                            <option>Regular Check-up</option>
+                        </optgroup>
+                        <optgroup label="Operative:">
+                            <option>Restoration Class I</option>
+                            <option>Restoration Class II</option>
+                            <option>Restoration Class III</option>
+                            <option>Restoration Class IV</option>
+                            <option>Restoration Class V</option>
+                            <option>Restoration Class VI</option>
+                        </optgroup>
+                        <optgroup label="Endodontics:">
+                            <option>Anterior</option>
+                            <option>Pre-Molar</option>
+                            <option>Molar</option>
+                        </optgroup>
+                        <optgroup label="Orthodontics:">
+                            <option>Orthodontics Regular Check-up</option>
+                            <option>Orthodontic Treatment</option>
+                        </optgroup>
+                        <optgroup label="Pedodontics:">
+                            <option>Pulpotomy</option>
+                            <option>Stainless Steel Crown</option>
+                            <option>Zirconia Crown</option>
+                            <option>Extraction</option>
+
+                        </optgroup>
+                        <optgroup label="Fixed Prosthodontics:">
+                            <option>PFM Crown</option>
+                            <option>VM13 Crown</option>
+                            <option>Zirconia Crown</option>
+                            <option>Bridge</option>
+                            <option>Long Span Bridge</option>
+                        </optgroup>
+                        <optgroup label="Removable Prosthodontics:">
+                            <option>Acrylic Single Unit</option>
+                            <option>Soft Acrylic Single Unit</option>
+                            <option>Flexible Single Unit</option>
+                            <option>Vitalium Single Unit</option>
+                            <option>Complete Arch Acrylic</option>
+                            <option>Complete Arch Flexible</option>
+                            <option>Snap-on</option>
+                        </optgroup>
+                        <optgroup label="Surgery:">
+                            <option>Simple Extraction</option>
+                            <option>Wisdom Extraction</option>
+                            <option>Separation Extraction</option>
+                            <option>Impacted Extraction</option>
+                            <option>Suturing</option>
+                            <option>Sinus Elevation</option>
+                        </optgroup>
+                        <optgroup label="Implant:">
+                            <option>Implant Regular Check-up</option>
+                            <option>Implant</option>
+                        </optgroup>
+                        <optgroup label="Periodontics:">
+                            <option>Scaling</option>
+                            <option>Polishing</option>
+                            <option>Pockets Debridement</option>
+                            <option>Perio-surgery</option>
+                        </optgroup>
+
+                    </select>
+                    <label class="form-label" asp-for="Type"></label>
+                </div>
+                <span class="text-danger d-block" asp-validation-for="Type"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <input class="form-control form-control-solid" asp-for="@Model.Value" placeholder="Value..." />
+                    <label class="form-label" asp-for="@Model.Value"></label>
+                </div>
+                <span asp-validation-for="@Model.Value" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <textarea class="form-control form-control-solid rounded-3" asp-for="@Model.Note" style="height: 96px;" placeholder="Payment Note..."></textarea>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="actions">
+                <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn btn-primary  me-2">
+                    <span class="indicator-label">
+                        Add
+                    </span>
+                    <span class="indicator-progress">
+                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

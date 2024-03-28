@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.WebUtilities
+@model TreatmentPlansViewModel;
+
+<!--begin::Card body-->
+<div class="card-body py-2">
+    
+    <div class="mb-3">
+        <img src="~/assets/images/Tooth.png" alt="tooth" width="100%" />
+    </div>
+    <!--begin::Header-->
+    <div class="d-flex flex-stack py-5">
+        <!--begin::Title-->
+        <div class="mb-2 w-50" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
+            <a href="#" class="fs-4 fw-bold mb-1 text-gray-900 text-hover-primary">@Model.Name</a>
+        </div>
+        <!--end::Title-->
+        <!--begin::Badge-->
+        <div class="w-50 text-end">
+            @{
+                DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+                TimeOnly time = TimeOnly.FromDateTime(DateTime.Now);
+                DateTime dt1 = DateTime.Parse(Model.EndDate.ToString()).Date;
+                DateTime dt2 = DateTime.Parse(today.ToString()).Date;
+                int result = DateTime.Compare(dt1, dt2);
+                if (result >= 0)
+                {
+                    <span class="badge badge-success">in process</span>
+
+                }
+                else
+                {
+                    <span class="badge badge-danger">completed</span>
+                }
+            }
+        </div>
+
+        <!--end::Badge-->
+    </div>
+    <!--end::Header-->
+    <div class="teeth-box d-flex justify-content-start align-items-center pb-4">
+        @foreach (var tooth in Model.Teeth)
+        {
+            <span class="badge badge-light-info me-2 mb-2">@tooth</span>
+        }
+    </div>
+    <!--begin::Stats-->
+    <div class="d-flex flex-column mb-3">
+        <!--begin::Stat-->
+        <div class="border border-dashed border-gray-300 mb-3 rounded d-flex flex-column align-items-start justify-content-center py-2 px-3" style="background-color:#f5f8fa">
+            <p class="mb-1 fw-semibold text-muted">Start Date</p>
+            <div class="dateS">
+                <i class="fa-regular fa-calendar"></i>
+                <span class="mx-2">@Model.StartDate</span>
+            </div>
+        </div>
+        <!--end::Stat-->
+        <!--begin::Stat-->
+        <div class="border border-dashed border-gray-300 mb-3 rounded d-flex flex-column align-items-start justify-content-center py-2 px-3" style="background-color:#f5f8fa">
+            <p class="mb-1 fw-semibold text-muted">End Date</p>
+            <div class="dateS">
+                <i class="fa-regular fa-calendar"></i>
+                <span class="mx-2">@Model.EndDate.ToString()</span>
+            </div>
+        </div>
+        <!--end::Stat-->
+    </div>
+    <!--end::Stats-->
+    <!--begin::solid autosize textarea-->
+    <div class="rounded border d-flex flex-column p-5">
+        <label for="" class="form-label">Plan content</label>
+        <textarea asp-for="Notes" class="form-control form-control form-control-solid" disabled data-kt-autosize="true">
+            @Model.Notes
+        </textarea>
+    </div>
+    <!--end::solid autosize textarea-->
+</div>
+<!--end::Card body-->
+

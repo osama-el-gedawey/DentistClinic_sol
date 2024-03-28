@@ -1,0 +1,85 @@
+﻿ 
+@model MedicinePrescriptionViewModel;
+<form id="medicineForm" asp-controller="Prescription" asp-action="CreateMedicine"
+      data-ajax-method="post"
+      data-ajax="true"
+      data-ajax-begin="onPrescriptionRequestBegin"
+      data-ajax-success="onPrescriptionRequestSuccess"
+      data-ajax-failure="onPrescriptionRequestFailure"
+      data-ajax-complete="onPrescriptionRequestComplete">
+    <div class="row">
+        <div class="">
+            <input type="hidden" asp-for="@Model.PrescriptionId" name="PrescriptionId" />
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="mb-3">
+                    <div class="form-floating mb-2">
+                        <select class="form-select form-select-solid js-select2" asp-items="@Model.MedicinesSelect" asp-for="@Model.MedicineId" data-placeholder="Select a Medicine">
+                        </select>
+                        <label class="form-label" asp-for="@Model.MedicineId"></label>
+                    </div>
+                    <span class="text-danger d-block" asp-validation-for="@Model.MedicineId"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <input class="form-control form-control-solid" placeholder="dose..." asp-for="@Model.Dose" />
+                    <label class="form-label" asp-for="@Model.Dose"></label>
+                </div>
+                <span class="text-danger" asp-validation-for="@Model.Dose"></span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <select class="form-select form-select-solid js-select2" asp-for="@Model.Hours" data-placeholder="Select Hours" name="Hours">
+                        <option value="0">None</option>
+                        <option value="4">Every 4 Hours</option>
+                        <option value="6">Every 6 Hours</option>
+                        <option value="8">Every 8 Hours</option>
+                        <option value="12">Every 12 Hours</option>
+                        <option value="24">Once Day</option>
+                    </select>
+                    <label class="form-label" asp-for="@Model.Hours"></label>
+                </div>
+                <span class="text-danger" asp-validation-for="@Model.Hours"></span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <div class="form-floating mb-2">
+                    <select class="form-select form-select-solid js-days" asp-for="@Model.Days" data-placeholder="Select Days" name="Days">
+                        <option value="0">None</option>
+                        <option value="1">One Days</option>
+                        <option value="2">Two Days</option>
+                        <option value="3">Three Days</option>
+                        <option value="4">Four Days</option>
+                        <option value="7">One Week</option>
+                        <option value="14">Two Weeks</option>
+                        <option value="21">Three Weeks</option>
+                        <option value="30">One Month</option>
+                    </select>
+                    <label class="form-label" asp-for="@Model.Days"></label>
+                </div>
+                <span class="text-danger" asp-validation-for="@Model.Days"></span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="actions">
+                <button type="button" class="btn-sm btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn btn-primary me-2">
+                    <span class="indicator-label">
+                        Add
+                    </span>
+                    <span class="indicator-progress">
+                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

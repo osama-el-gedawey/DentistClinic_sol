@@ -1,0 +1,129 @@
+﻿@model IEnumerable<ContactMsgViewModel>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+	ViewData["Title"] = "Messages";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/assets/Plugins/datatables/datatables.bundle.css" />
+}
+
+<div class="bg-light-primary border border-primary border-3 border-dashed d-flex justify-content-between rounded w-100 p-5 mb-10">
+	<div class="d-flex align-items-center">
+		<div class="symbol symbol-40px me-4">
+			<div class="symbol-label fs-2 fw-semibold">
+				<!--begin::Svg Icon | path: icons/duotune/general/gen002.svg-->
+				<span class="svg-icon svg-icon-2 svg-icon-primary">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+						<path d="M64 112c-8.8 0-16 7.2-16 16v22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V212.2L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z" fill="currentColor" />
+					</svg>
+				</span>
+				<!--end::Svg Icon-->
+			</div>
+		</div>
+		<!--begin::Content-->
+		<div class="d-flex flex-column pe-0 pe-sm-10">
+			<h5 class="mb-1">Messages</h5>
+		</div>
+		<!--end::Content-->
+	</div>
+	
+</div>
+<div class="card shadow-sm">
+	<!--Begin Card::Header-->
+	<div class="card-header">
+		<partial name="_DatatableCardHeader" />
+		<div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+			<!--begin::Export dropdown-->
+			<button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+				<i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
+				Export Report
+			</button>
+			<!--begin::Menu-->
+			<div id="kt_datatable_example_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="copy">
+						Copy to clipboard
+					</a>
+				</div>
+				<!--end::Menu item-->
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="excel">
+						Export as Excel
+					</a>
+				</div>
+				<!--end::Menu item-->
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="csv">
+						Export as CSV
+					</a>
+				</div>
+				<!--end::Menu item-->
+				<!--begin::Menu item-->
+				<div class="menu-item px-3">
+					<a href="#" class="menu-link px-3" data-kt-export="pdf">
+						Export as PDF
+					</a>
+				</div>
+				<!--end::Menu item-->
+			</div>
+			<!--end::Menu-->
+			<!--end::Export dropdown-->
+			<!--begin::Hide default export buttons-->
+			<div id="kt_datatable_example_buttons" class="d-none"></div>
+		</div>
+	</div>
+	<!--End Card::Header-->
+	<div class="card-body pt-0">
+		<div class="table-responsive">
+			<table id="kt_datatable_zero_configuration" class="js-datatables table table-row-dashed table-row-gray-300 gy-3 align-middle">
+				<thead>
+					<tr class="fw-bold fs-6 text-gray-800">
+						<th>Name</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th class="text-center">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var message in Model)
+					{
+						<tr>
+							<td>@message.Name</td>
+							<td>@message.Email</td>
+							<td>@message.Phone</td>
+							<td class="d-flex justify-content-center align-items-center">
+								<div class="action-message d-flex justify-content-center align-items-center">
+									<a class="d-inline-block rounded-circle d-flex justify-content-center align-items-center p-3 me-2" asp-action="Details" asp-route-id="@message.Id" style="background-color: #dedede;width:30px;height:30px;">
+										<span>
+											<i class="fa-regular @(message.IsConfirmed ? "fa-eye" : "fa-eye-slash")"></i>
+										</span>
+									</a>
+									<a class="d-inline-block rounded-circle d-flex justify-content-center align-items-center p-3 me-2 js-delete-message" data-url="/Contacts/Delete/@message.Id" style="background-color: #dedede;width:30px;height:30px;" href="javascript:;">
+										<span>
+											<i class="fa-solid fa-trash-can text-danger"></i>
+										</span>
+									</a>
+								</div>
+							</td>
+						</tr>
+					}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+	<!--End Card::Body-->
+</div>
+<input type="hidden" name="__RequestVerificationToken" value="@antiforgery.GetAndStoreTokens(Context).RequestToken" id="tokkenForgery" />
+
+@section Scripts {
+	<script src="~/assets/Plugins/datatables/datatables.bundle.js"></script>
+	<script src="~/js/contact.js" asp-append-version="true"></script>
+}
+
+
+

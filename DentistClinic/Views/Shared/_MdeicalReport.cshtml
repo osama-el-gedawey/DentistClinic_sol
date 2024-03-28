@@ -1,0 +1,126 @@
+﻿@model MedicalReportViewModel;
+@inject UserManager<ApplicationUser> userManger;
+
+@{
+    var applicationUser = await userManger.GetUserAsync(User) ?? new ApplicationUser();
+}
+<div class="col-md-4 col-lg-12 col-xl-4 medical-report boxing">
+
+    <!--begin::Card-->
+    <div class="card mb-6 mb-xl-9" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;">
+        <!--begin::Card body-->
+        <div class="card-body py-2">
+            <!--begin::Header-->
+            <div class="d-flex flex-stack mb-3">
+                <!--begin::Badge-->
+                <div class="badge badge-@((Model.EndDate == null) ? "danger" : "success") report-status">@((Model.EndDate == null) ? "Not Recovered" : "Recovered")</div>
+                <!--end::Badge-->
+                <!--begin::Menu-->
+                <div>
+                    <button type="button" class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <!--begin::Menu 3-->
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true">
+                        <!--begin::Heading-->
+                        <div class="menu-item px-3">
+                            <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
+                                Report 
+                            </div>
+                        </div>
+                        <!--end::Heading-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="javascript:;" class="menu-link px-3 js-render-modal" data-title="Medical Report Details" data-url="/MedicalReports/Details/@Model.Id">
+                                Details
+                            </a>
+                        </div>
+                        <!--end::Menu item-->
+                        @if (await userManger.IsInRoleAsync(applicationUser, "Doctor"))
+                        {
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="javascript:;" class="menu-link px-3 js-render-modal" data-update="true" data-title="Edit Medical Report" data-url="/MedicalReports/Update/@Model.Id" data-box="true">
+                                    Edit
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="javascript:;" class="menu-link px-3 js-delete-report" data-url="/MedicalReports/Delete/@Model.Id">
+                                    Delete
+                                </a>
+                            </div>
+                            <!--end::Menu item-->
+                        }
+
+                    </div>
+                    <!--end::Menu 3-->
+                </div>
+                <!--end::Menu-->
+            </div>
+            <!--end::Header-->
+            <!--begin::Title-->
+            <div class="my-3" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
+                <a href="#" class="fs-4 fw-bold mb-1 text-gray-900 text-hover-primary report-name">@Model.Name</a>
+            </div>
+            <!--end::Title-->
+            <!--begin::Stats-->
+            <div class="d-flex flex-column my-1">
+                <!--begin::Stat-->
+                <div class="border border-dashed border-gray-300 mb-2 rounded d-flex flex-column align-items-start justify-content-center py-2 px-3">
+                    <p class="mb-1 fw-semibold text-muted">Start Date</p>
+                    <div class="dateS">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span class="mx-2 report-start-date">@((Model.StartDate == null) ? "Unknown" : Model.StartDate.ToString())</span>
+                    </div>
+                </div>
+                <!--end::Stat-->
+                <!--begin::Stat-->
+                <div class="border border-dashed border-gray-300 mb-2 rounded d-flex flex-column align-items-start justify-content-center py-2 px-3">
+                    <p class="mb-1 fw-semibold text-muted">End Date</p>
+                    <div class="dateS">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span class="mx-2 report-end-date">@((Model.EndDate == null) ? "Unknown" : Model.EndDate.ToString())</span>
+                    </div>
+                </div>
+                <!--end::Stat-->
+            </div>
+            <!--end::Stats-->
+            <!--begin::Footer-->
+            <div class="d-flex flex-stack flex-wrapr">
+
+                <!--begin::Users-->
+                <div class="symbol-group symbol-hover my-1 flex-nowrap overflow-hidden px-3">
+                    @if (Model.Documentations.Count() > 0)
+                    {
+                        int medicalLength = (Model.Documentations.Count() > 6) ? 6 : Model.Documentations.Count();
+                        for (int i = 0; i < medicalLength; i++)
+                        {
+                            <!--begin::Overlay-->
+                            <a class="gallery-img-link" data-card="card-@Model.Id" data-index=@i>
+                                <!--begin::Image-->
+                                <div class="symbol symbol-35px" data-bs-toggle="tooltip" title="documentation">
+                                    <img alt="documentation" class="documentation-img card-@Model.Id" src="data:image /*;base64,@(Convert.ToBase64String( @Model.Documentations.ToArray()[i]))" />
+                                </div>
+                                <!--end::Image-->
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <div class="symbol symbol-35px" data-bs-toggle="tooltip" title="no documentation">
+                            <img alt="Pic" src="~/assets/images/No_Image_Available.jpg" />
+                        </div>
+                    }
+                </div>
+                <!--end::Users-->
+            </div>
+            <!--end::Footer-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+
+</div>
+

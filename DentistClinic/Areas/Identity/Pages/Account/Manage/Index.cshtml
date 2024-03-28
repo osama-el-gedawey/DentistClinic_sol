@@ -1,0 +1,153 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard </a></li>
+                    <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+                    <li class="breadcrumb-item active">Edit Profile</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <form id="profile-form" method="post" enctype="multipart/form-data">
+        <partial name="_StatusMessage" for="StatusMessage" />
+        <div class="card-box">
+@*             <h3 class="card-title">Basic Informations</h3>
+ *@            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-white">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs nav-tabs-solid" role="tablist">
+                                <li class="nav-item" role="presentation"><a class="nav-link active" href="#solid-tab1" data-bs-toggle="tab" aria-selected="true" role="tab">Change Profile</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="#solid-tab2" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Change Email</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="#solid-tab3" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Change Password</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active show py-5" id="solid-tab1" role="tabpanel">
+                                    <form id="profile-form" method="post" enctype="multipart/form-data">
+                                        <div class="profile-img-wrap">
+                                            @if (Model.Input.ProfilePicture != null)
+                                            {
+                                                <img class="inline-block img-preview" src="data:image /*;base64,@(Convert.ToBase64String(Model.Input.ProfilePicture))" alt="user">
+                                            }
+                                            else
+                                            {
+                                                <img class="inline-block img-preview" src="~/images/dashboard/user.jpg" alt="user">
+                                            }
+                                            <div class="fileupload btn">
+                                                <span class="btn-text">edit</span>
+                                                <input asp-for="Input.ProfilePicture" class="upload" type="file"
+                                                       onchange="document.querySelector('.img-preview').src = window.URL.createObjectURL(this.files[0])"
+                                                       accept="image/jpeg , image/png , image/jpg">
+                                            </div>
+                                        </div>
+                                        <div class="profile-basic">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-block local-forms">
+                                                        <label class="focus-label" asp-for="Input.Username"></label>
+                                                        <input asp-for="Input.Username" class="form-control floating">
+                                                        <span asp-validation-for="Input.Username" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block local-forms">
+                                                        <label class="focus-label" asp-for="Input.PhoneNumber"></label>
+                                                        <input asp-for="Input.PhoneNumber" class="form-control floating">
+                                                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block local-forms">
+                                                        <label asp-for="Input.Address"></label>
+                                                        <div class="cal-icon">
+                                                            <input asp-for="Input.Address" class="form-control floating">
+                                                            <span asp-validation-for="Input.Address" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block local-forms">
+                                                        <label asp-for="Input.Birthdate"></label>
+                                                        <div class="cal-icon">
+                                                            <input asp-for="Input.Birthdate" class="form-control floating datetimepicker">
+                                                            <span asp-validation-for="Input.Birthdate" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block local-forms">
+                                                        <label asp-for="Input.Occupation"></label>
+                                                        <div class="cal-icon">
+                                                            <input asp-for="Input.Occupation" class="form-control floating">
+                                                            <span asp-validation-for="Input.Occupation" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-block local-forms">
+                                                        <label asp-for="Input.Gender" class="focus-label"></label>
+                                                        <select asp-for="Input.Gender" class="form-control select">
+                                                            <option value="">Select Gendar</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                        </select>
+                                                        <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center ">
+                                            <button class="btn btn-primary submit-btn mb-4" type="submit">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="solid-tab2" role="tabpanel">
+                                    Tab content 2
+                                </div>
+                                <div class="tab-pane" id="solid-tab3" role="tabpanel">
+                                    Tab content 3
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form>
+        <div class="card-box">
+            <h3 class="card-title">Contact Informations</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-block local-forms">
+                        <label class="focus-label">Address</label>
+                        <input type="text" class="form-control floating" value="4487 Snowbird Lane">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-block local-forms">
+                        <label class="focus-label">Address</label>
+                        <input type="text" class="form-control floating" value="4487 Snowbird Lane">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center ">
+            <button class="btn btn-primary submit-btn mb-4" type="button">Save</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

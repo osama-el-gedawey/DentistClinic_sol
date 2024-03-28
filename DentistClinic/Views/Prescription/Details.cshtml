@@ -1,0 +1,288 @@
+﻿@model PrescriptionViewModel;
+@inject UserManager<ApplicationUser> userManger;
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+
+@{
+    var applicationUser = await userManger.GetUserAsync(User) ?? new ApplicationUser();
+    ViewData["Title"] = "Prescription";
+}
+
+<div class="card shadow-sm">
+    <!--Begin Card::Header-->
+    <div class="card-header">
+        <h5 class="align-self-center m-0">Add Prescription</h5>
+    </div>
+    <!--End Card::Header-->
+    <!--Begin Card::Body-->
+    <div class="card-body">
+        <form id="PrescriptionForm" asp-controller="Prescription" asp-action="CreateComment">
+            <input type="hidden" asp-for="@Model.Id" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-header py-2 px-2">
+                        <!--begin::Title-->
+                        <h3 class="card-title align-items-start flex-column">
+                            <!--end::Title-->
+                            <!--begin::Toolbar-->
+                            <span class="card-label fw-bold text-gray-900" style="font-size:25px;">DR Ahmed Bhnsawy</span>
+                            <span class="card-label fw-semibold text-gray-900">@Model.patient.FullName</span>
+                            <span class="text-gray-500 mt-1 fw-semibold fs-6">@Model.Date</span>
+                        </h3>
+
+                        <div class="card-toolbar">
+                           
+                        </div>
+                        <!--end::Toolbar-->
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card-body px-2">
+                        <!--begin::Tab Content-->
+                        <div class="tab-content">
+                            <!--begin::Tab panel-->
+                            <div id="kt_activity_today" class="card-body p-0 tab-pane fade show active" role="tabpanel" aria-labelledby="kt_activity_today_tab">
+                                <!--begin::Timeline-->
+                                <div class="timeline timeline-border-dashed">
+                                    <!--begin::Timeline item-->
+                                    <div class="timeline-item">
+                                        <!--begin::Timeline line-->
+                                        <div class="timeline-line"></div>
+                                        <!--end::Timeline line-->
+                                        <!--begin::Timeline icon-->
+                                        <div class="timeline-icon">
+                                            <i class="fa-solid fa-capsules"></i>
+                                        </div>
+                                        <!--end::Timeline icon-->
+                                        <!--begin::Timeline content-->
+                                        <div class="timeline-content mb-10 mt-n1">
+                                            <!--begin::Timeline heading-->
+                                            <div class="pe-3 mb-5 d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Medicines</div>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <div>
+                                                    @if (await userManger.IsInRoleAsync(applicationUser, "Doctor"))
+                                                    {
+                                                        <button type="button" class="btn btn-light-primary btn-sm js-render-prescription-modal" data-title="Create Medicine" data-url="/Prescription/CreateMedicine/@Model.Id">
+                                                            <i class="bi bi-plus-square-dotted"></i>
+                                                            Add Medicine
+                                                        </button>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline heading-->
+                                            <!--begin::Timeline details-->
+                                            <div class="overflow-auto pb-5 medicines-container">
+
+                                                @foreach (var medicinePrescription in Model.MedicinePrescriptions)
+                                                {
+                                                    <Partial name="_MedicinePrescriptionDetails" model="medicinePrescription" />
+                                                }           
+
+                                            </div>
+                                            <!--end::Timeline details-->
+                                        </div>
+                                        <!--end::Timeline content-->
+                                    </div>
+                                    <!--end::Timeline item-->
+                                    <!--begin::Timeline item-->
+                                    <div class="timeline-item">
+                                        <!--begin::Timeline line-->
+                                        <div class="timeline-line"></div>
+                                        <!--end::Timeline line-->
+                                        <!--begin::Timeline icon-->
+                                        <div class="timeline-icon">
+                                            <i class="fa-solid fa-vial"></i>
+                                        </div>
+                                        <!--end::Timeline icon-->
+                                        <!--begin::Timeline content-->
+                                        <div class="timeline-content mb-10 mt-n1">
+                                            <!--begin::Timeline heading-->
+                                            <div class="pe-3 mb-5 d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Analyses</div>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <div>
+                                                    @if (await userManger.IsInRoleAsync(applicationUser, "Doctor"))
+                                                    {
+                                                        <button type="button" class="btn btn-light-primary btn-sm js-render-prescription-modal" data-title="Create Analysis" data-url="/Prescription/CreateAnalysis/@Model.Id">
+                                                            <i class="bi bi-plus-square-dotted"></i>
+                                                            Add Analysis
+                                                        </button>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline heading-->
+                                            <!--begin::Timeline details-->
+                                            <div class="overflow-auto pb-5 analysis-container">
+
+                                                @foreach (var analysisPrescription in Model.AnalysisPrescriptions)
+                                                {
+                                                    <Partial name="_AnalysisPrescriptionDetails" model="analysisPrescription" />
+                                                }
+
+                                            </div>
+                                            <!--end::Timeline details-->
+                                        </div>
+                                        <!--end::Timeline content-->
+                                    </div>
+                                    <!--end::Timeline item-->
+                                    <!--begin::Timeline item-->
+                                    <div class="timeline-item">
+                                        <!--begin::Timeline line-->
+                                        <div class="timeline-line"></div>
+                                        <!--end::Timeline line-->
+                                        <!--begin::Timeline icon-->
+                                        <div class="timeline-icon">
+                                            <i class="fa-solid fa-x-ray"></i>
+                                        </div>
+                                        <!--end::Timeline icon-->
+                                        <!--begin::Timeline content-->
+                                        <div class="timeline-content mb-10 mt-n1">
+                                            <!--begin::Timeline heading-->
+                                            <div class="pe-3 mb-5 d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Xrays</div>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <div>
+                                                    @if (await userManger.IsInRoleAsync(applicationUser, "Doctor"))
+                                                    {
+                                                        <button type="button" class="btn btn-light-primary btn-sm js-render-prescription-modal" data-title="Create Xrays" data-url="/Prescription/CreateXray/@Model.Id">
+                                                            <i class="bi bi-plus-square-dotted"></i>
+                                                            Add Xray
+                                                        </button>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline heading-->
+                                            <!--begin::Timeline details-->
+                                            <div class="overflow-auto pb-5 xrays-container">
+
+                                                @foreach (var xrayPrescription in Model.XrayPrescriptions)
+                                                {
+                                                    <Partial name="_XrayPrescriptionDetails" model="xrayPrescription" />
+                                                }
+
+                                            </div>
+                                            <!--end::Timeline details-->
+                                        </div>
+                                        <!--end::Timeline content-->
+                                    </div>
+                                    <!--end::Timeline item-->
+                                    <!--begin::Timeline item-->
+                                    <div class="timeline-item">
+                                        <!--begin::Timeline line-->
+                                        <div class="timeline-line"></div>
+                                        <!--end::Timeline line-->
+                                        <!--begin::Timeline icon-->
+                                        <div class="timeline-icon">
+                                            <i class="fa-regular fa-comment"></i>
+                                        </div>
+                                        <!--end::Timeline icon-->
+                                        <!--begin::Timeline content-->
+                                        <div class="timeline-content mb-10 mt-n1">
+                                            <!--begin::Timeline heading-->
+                                            <div class="pe-3 mb-5 d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Prescription Notes</div>
+                                                    <!--end::Title-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline heading-->
+                                            <!--begin::Timeline details-->
+                                            <div class="overflow-auto pb-5">
+                                                @if (await userManger.IsInRoleAsync(applicationUser, "Doctor"))
+                                                {
+                                                    <!--begin::solid autosize textarea-->
+                                                    <div class="rounded border d-flex flex-column p-5">
+                                                        <label for="" class="form-label">Prescription Notes</label>
+                                                        <textarea class="form-control form-control form-control-solid" data-kt-autosize="true" asp-for="@Model.Notes"></textarea>
+                                                    </div>
+                                                    <!--end::solid autosize textarea-->
+                                                }
+                                                else
+                                                {
+                                                    <!--begin::solid autosize textarea-->
+                                                    <div class="rounded border d-flex flex-column p-5">
+                                                        <textarea class="form-control form-control form-control-solid" data-kt-autosize="true" disabled asp-for="@Model.Notes"></textarea>
+                                                    </div>
+                                                    <!--end::solid autosize textarea-->
+                                                }
+
+                                            </div>
+                                            <!--end::Timeline details-->
+                                        </div>
+                                        <!--end::Timeline content-->
+                                    </div>
+                                    <!--end::Timeline item-->
+                                </div>
+                                <!--end::Timeline-->
+                            </div>
+                            <!--end::Tab panel-->
+                        </div>
+                        <!--end::Tab Content-->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--End Card::Body-->
+    <!--Begin Card::Footer-->
+    <div class="card-footer py-2">
+        @if (await userManger.IsInRoleAsync(applicationUser, "Doctor"))
+        {
+            <button type="submit" class="btn-sm btn btn-primary me-2" form="PrescriptionForm">
+                <span class="indicator-label">
+                    Save
+                </span>
+                <span class="indicator-progress">
+                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </span>
+            </button>
+        }
+
+        <a class="btn btn-lignt text-primary" asp-controller="Patients" asp-action="Details" asp-route-id="@Model.patient.Id">Cancel</a>
+    </div>
+    <!--End Card::Footer-->
+</div>
+<div class="modal fade" id="PrescriptionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- light box overlay -->
+<div class="lightBox-overlay d-none justify-content-center align-items-center">
+    <a href="javascript:;" class="lightbox-arrow lightbox-arrow-left">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    <div class="image-center-container d-flex flex-column align-items-center">
+        <img class="image-center" src="" alt="center">
+    </div>
+    <a href="javascript:;" class="lightbox-arrow lightbox-arrow-right">
+        <i class="fa-solid fa-chevron-right"></i>
+    </a>
+</div>
+<input type="hidden" name="__RequestVerificationToken" value="@antiforgery.GetAndStoreTokens(Context).RequestToken" id="tokkenForgery" />
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/prescription.js"></script>
+}

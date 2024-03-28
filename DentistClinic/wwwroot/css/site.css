@@ -1,0 +1,248 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.dt-spinner + div {
+    display: none;
+}
+
+/*start upload image*/
+
+.upload-card {
+    background-color: #fafbff;
+    height: auto;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+    .upload-card .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .upload-card .top p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #878a9a;
+        }
+
+
+
+        .upload-card .top button:active {
+            transform: translateY(5px);
+        }
+
+    .upload-card .form-upload {
+        background-color: #dfe3f259;
+        width: 100%;
+        height: 160px;
+        border-radius: 5px;
+        border: 2px dashed #d5d5e1;
+        font-size: 0.9rem;
+        font-weight: 500;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        margin-top: 20px;
+    }
+
+
+    .upload-card .form-upload .select {
+        color: #5256ad;
+        margin-left: 7px;
+        cursor: pointer;
+    }
+
+    .upload-card .form-upload input {
+        display: none;
+    }
+
+    .upload-card .image-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        position: relative;
+        height: auto;
+        margin-top: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .upload-card .image-container .image {
+        height: 85px;
+        width: 85px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 7px;
+        margin-right: 7px;
+    }
+
+    .upload-card .image-container .image:nth-child(4n) {
+        margin-right: 0;
+    }
+
+    .upload-card .image-container .image img {
+        height: 100%;
+        width: 100%;
+    }
+
+    .upload-card .image-container .image span {
+        position: absolute;
+        top: -4px;
+        right: 5px;
+        cursor: pointer;
+        font-size: 22px;
+        color: #610c0c;
+    }
+
+    .upload-card .image-container .image span:hover {
+        opacity: 0.8;
+    }
+
+
+
+/* end upload image */
+
+/*start custom lightbox*/
+.lightBox-overlay {
+    background-color: #000000ad;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: opacity 0.3s linear;
+    position: fixed;
+}
+
+    .lightBox-overlay .image-center-container {
+        width: 50%;
+        height: 500px;
+        padding: 2px;
+        border-radius: 5px;
+        border: 1px solid #676767;
+    }
+
+
+@media (max-width: 768px) {
+    .lightBox-overlay .image-center-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lightBox-overlay .image-center-container {
+        height: 250px;
+    }
+}
+
+.lightBox-overlay .image-center-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.lightbox-arrow {
+    background-color: #7367f052;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.lightbox-arrow-left {
+    left: 50px;
+}
+
+.lightbox-arrow-right {
+    right: 50px;
+}
+
+/*end custom lightbox*/
+/*Timeline-icon*/
+.timeline .timeline-icon {
+    z-index: 1;
+    flex-shrink: 0;
+    margin-left: -20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--bs-gray-300);
+    border-radius: 50%;
+    border-style: dashed;
+}
+
+/*-----------*/
+.good-morning-blk {
+    background: #FFFFFF;
+    border-radius: 12px;
+    position: relative;
+    z-index: 9;
+}
+
+.morning-user {
+    padding: 50px 35px 50px 0px;
+}
+    .morning-user h2 {
+        font-size: 25px;
+        font-weight: 600;
+    }
+    .morning-user p {
+        font-size: 15px;
+        font-weight: 500;
+        color: rgba(51, 52, 72, 0.5);
+        margin-bottom: 0;
+    }
+
+    .morning-user h2 span {
+        color: #2E37A4;
+    }
+
+.position-blk {
+    background-image: url(/assets/images/bg-img-01.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+}
+.morning-img img {
+    position: absolute;
+    bottom: 0;
+    vertical-align: middle;
+}
+
