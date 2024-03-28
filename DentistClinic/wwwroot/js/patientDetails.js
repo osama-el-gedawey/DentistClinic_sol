@@ -3,7 +3,7 @@
 $(document).ready(function () {
 
 
-    $("body").delegate(".js-delete-box", "click", function () {
+    $("body").delegate(".js-delete-report", "click", function () {
 
         var deleteBtn = $(this);
         //handl confirmation sweetAlert2
