@@ -207,6 +207,10 @@
                 <!--begin::Row-->
                 <div class="row g-9 prescription-container">
                     <!--begin::Col-->
+                    @if (Model.Prescriptions.Count == 0)
+                    {
+                        <h6 class="text-center">There is no Prescriptions yet</h6>
+                    }
                     @foreach (var prescription in Model.Prescriptions!)
                     {
                         <partial name="_Prescription" model="prescription" />
@@ -463,6 +467,10 @@
                 <!--begin::Row-->
                 <div class="row g-9 reports-container">
                     <!--begin::Col-->
+                    @if (Model.MedicalHistories.Count == 0)
+                    {
+                        <h6 class="text-center">There is no Mdeical Reports yet</h6>
+                    }
                     @foreach (var medicalHistory in Model.MedicalHistories!)
                     {
                         <partial name="_MdeicalReport" model="medicalHistory" />

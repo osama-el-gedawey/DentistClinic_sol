@@ -1,5 +1,7 @@
-﻿@{
+﻿@inject UserManager<ApplicationUser> userManager;
+@{
     ViewData["Title"] = "Dashboard";
+    ApplicationUser applicationUser = await userManager.GetUserAsync(User) ?? new ApplicationUser();
 }
 
 <div class="card mt-5">
@@ -12,7 +14,13 @@
             </div>
             <div class="col-12 col-lg-6">
                 <div class="morning-user ps-5">
-                    <h2>Good Morning, <span>Dr.Ahmed Bahnsawy</span></h2>
+                    <h2>Good Morning, 
+                        @if (await userManager.IsInRoleAsync(applicationUser!, "Doctor"))
+                        {
+                            <span>Dr.Ahmed Bahnsawy</span>
+                        }
+                        
+                     </h2>
                     <p>Have a nice day at work</p>
                 </div>
             </div>
