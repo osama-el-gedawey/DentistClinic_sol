@@ -43,7 +43,7 @@
                             Upload Documentations
                             <span class="select">Browse</span>
                         </span>
-                        <input type="file" multiple="" asp-for="@Model.MedicalHistoryImages">
+                        <input type="file" accept="image/jpg,image/png,image/jpeg" multiple="" asp-for="@Model.MedicalHistoryImages">
                     </div>
                     <div class="image-container">
                         @foreach (var document in Model.Documentations)
