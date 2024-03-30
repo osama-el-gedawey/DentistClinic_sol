@@ -15,7 +15,7 @@ namespace DentistClinic.Controllers
         {
             this._unitOfWork = unitOfWork;
         }
-        [Authorize(Roles = "Doctor , Reception")]
+        [Authorize(Roles = "Doctor")]
         public IActionResult Index()
 		{
             List<ContactMsgViewModel> vmodel = _unitOfWork.contactRepository.GetAll().Select(x => new ContactMsgViewModel
@@ -30,7 +30,7 @@ namespace DentistClinic.Controllers
 
             return View(vmodel);
         }
-        [Authorize(Roles = "Doctor , Reception")]
+        [Authorize(Roles = "Doctor")]
         public IActionResult Details(int id)
 		{
 
@@ -58,7 +58,7 @@ namespace DentistClinic.Controllers
 
 		}
 
-        [Authorize(Roles = "Doctor , Reception")]
+        [Authorize(Roles = "Doctor")]
         [AjaxOnly]
 		[HttpPost]
 		public IActionResult Delete(int id)

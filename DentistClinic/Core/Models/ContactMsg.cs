@@ -8,6 +8,7 @@ namespace DentistClinic.Core.Models
 		public int Id { get; set; }
         [Required]
         [MinLength(3, ErrorMessage = "Name must be 3 or more char")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must be letters only")]
         public string Name { get; set; } = null!;
         [Required]
         [EmailAddress]
