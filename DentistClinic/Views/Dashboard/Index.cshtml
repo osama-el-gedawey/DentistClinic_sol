@@ -1,4 +1,5 @@
 ﻿@inject UserManager<ApplicationUser> userManager;
+@model DashBoardViewModel
 @{
     ViewData["Title"] = "Dashboard";
     ApplicationUser applicationUser = await userManager.GetUserAsync(User) ?? new ApplicationUser();
@@ -14,16 +15,56 @@
             </div>
             <div class="col-12 col-lg-6">
                 <div class="morning-user ps-5">
-                    <h2>Good Morning, 
+                    
+                    <h2 style="margin-left:20px">Good Morning, 
                         @if (await userManager.IsInRoleAsync(applicationUser!, "Doctor"))
                         {
                             <span>Dr.Ahmed Bahnsawy</span>
                         }
                         
                      </h2>
-                    <p>Have a nice day at work</p>
+                    <p style="margin-left:20px">Have a nice day at work</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="card mt-5 p-5">
+    <h2 class="text-center mt-5" style="color:#2E37A4">Reservation Statistics</h2>
+    <canvas id="ReservationChart"></canvas>
+</div>
+<div class="card mt-5 p-5">
+    <h2 class="text-center mt-5" style="color:#2E37A4">Payment Statistics</h2>
+    <div class="w-50 mx-auto">
+        <canvas  id="PaymentChart"></canvas>
+    </div>
+    <canvas class="mt-5" id="Payment2Chart"></canvas>
+</div>
+<div class="card mt-5 p-5">
+    <h2 class="text-center mt-5" style="color:#2E37A4">Gender Statistics</h2>
+    <div class="w-50 mx-auto">
+        <canvas id="GenderChart"></canvas>
+    </div>
+    
+</div>
+<div class="card mt-5 p-5 ">
+    <h2 class="text-center mt-5" style="color:#2E37A4">Online & Offline Statistics</h2>
+    <div class="w-50 mx-auto">
+        <canvas id="PatientStatusChart"></canvas>
+    </div>
+
+</div>
+<br />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    
+    let dataReservationFromModel = @Html.Raw(Json.Serialize(Model.ReservationCount));
+    let dataPaymentFromModel = [@Model.paymentGains, @Model.paymentRemaining];
+    let dataPayment2FromModel = @Html.Raw(Json.Serialize(Model.paymentGainsList));
+    let dataPayment3FromModel = @Html.Raw(Json.Serialize(Model.paymentRemainingList));
+    let dataGenderFromModel = [@Model.GenderMale,@Model.GenderFemale,@Model.GenderChild];
+    let PatientStatusFromModel = [@Model.Online,@Model.Offline];
+    
+</script>
+<script src="~/js/DashBoard.js"></script>

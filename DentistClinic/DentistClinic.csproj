@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\js\contact.js" />
+    <Content Remove="wwwroot\js\DashBoard.js" />
     <Content Remove="wwwroot\js\Reception.js" />
     <Content Remove="wwwroot\js\Register.js" />
     <Content Remove="wwwroot\js\xray.js" />
@@ -23,6 +24,7 @@
     <None Include="wwwroot\js\Reception.js" />
     <None Include="wwwroot\js\contact.js" />
     <None Include="wwwroot\js\Register.js" />
+    <None Include="wwwroot\js\DashBoard.js" />
     <None Include="wwwroot\js\xray.js" />
     <None Include="wwwroot\Web\js\main.js" />
     <None Include="wwwroot\Web\lib\easing\easing.js" />
