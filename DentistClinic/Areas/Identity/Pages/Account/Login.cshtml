@@ -38,6 +38,97 @@
                             </div>
 
                             <div class="col-12">
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-light"><i class="fa fa-lock text-primary"></i></span>
+                                    <input type="password" class="form-control bg-light required" style="border-radius: 5px;" asp-for="Input.Password" placeholder="Password" id="passwordInput">
+                                    <button class="btn btn-primary" type="button" id="togglePassword" onclick="togglePasswordVisibility('passwordInput', 'togglePassword')"><i class="fa fa-eye"></i></button>
+                                </div>
+
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="forgotpass d-flex justify-content-between align-items-center py-3">
+                                <div class="remember-me">
+                                    <label class="custom_check mr-2 mb-0 d-inline-flex remember-me">
+                                        <input type="checkbox" name="radio" class="mx-2">
+                                        <span class="checkmark" style="background-color: #06A3DA;"></span>
+                                        Remember me
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="input-block login-btn text-center">
+                                <button class="btn btn-primary btn-block w-100" type="submit">Login</button>
+                            </div>
+                        </form>
+                        <br />
+                        <div class="next-sign d-flex justify-content-center">
+                            <p class="account-subtitle text-center">Don't have an account? <a asp-page="/Account/Register">Register</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Endl Login Form-->
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Function to toggle password visibility
+        function togglePasswordVisibility(inputId, buttonId) {
+            var passwordInput = document.getElementById(inputId);
+            var button = document.getElementById(buttonId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                button.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to hide password
+            } else {
+                passwordInput.type = "password";
+                button.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon to show password
+            }
+        }
+    </script>
+}
+@* @page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = "/Views/Shared/_HomeLayout.cshtml";
+
+}
+
+<div class="box-page" style="background: linear-gradient(0deg, rgba(51, 53, 72, 0.05), rgba(51, 53, 72, 0.05)), #FFFFFF;">
+    <div class="container" style="padding-top:90px; padding-bottom:180px;">
+        <div class="row">
+            <div class="col-lg-6 login-wrap">
+                <div class="login-sec">
+                    <div class="log-img">
+                        <img class="img-fluid" src="~/Web/img/RegisterImage.jpg" alt="Logo">
+                    </div>
+                </div>
+            </div>
+            <!--Start Login Form-->
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="login-container p-5" style=" border-radius:15px; background-color:#FFF;box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
+                        <div class="login-header">
+                            <div class="center-logo text-center">
+                                <h3 class="m-0 text-primary"><i class="fa fa-tooth me-2"></i>BHNS Dental Clinic </h3>
+                            </div>
+                            <h4 class="text-muted py-4">Login</h4>
+                        </div>
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                        <form id="LoginForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa fa-envelope text-primary"></i></span>
+                                    <input type="text" class="form-control bg-light" style="border-radius:5px;" placeholder="Email" asp-for="Input.Email">
+                                </div>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text bg-light"><i class="fa fa-lock text-primary"></i></span>
                                     <input type="password" class="form-control bg-light required" style="border-radius: 5px;" asp-for="Input.Password" placeholder="Password" id="passwordInput">
@@ -71,5 +162,20 @@
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Function to toggle password visibility
+        function togglePasswordVisibility(inputId, buttonId) {
+            var passwordInput = document.getElementById(inputId);
+            var button = document.getElementById(buttonId);
 
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                button.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to hide password
+            } else {
+                passwordInput.type = "password";
+                button.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon to show password
+            }
+        }
+    </script>
 }
+ *@
