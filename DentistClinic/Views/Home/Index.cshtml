@@ -90,16 +90,16 @@
                 <div class="bg-primary d-flex flex-column p-5" style="height: 300px;">
                     <h3 class="text-white mb-3">Opening Hours</h3>
                     <div class="d-flex justify-content-between text-white mb-3">
-                        <h6 class="text-white mb-0">Mon - Fri</h6>
-                        <p class="mb-0"> 8:00am - 9:00pm</p>
+                        <h6 class="text-white mb-0">Sun - Thu</h6>
+                        <p class="mb-0"> 3:00pm - 11:00pm</p>
                     </div>
                     <div class="d-flex justify-content-between text-white mb-3">
                         <h6 class="text-white mb-0">Saturday</h6>
-                        <p class="mb-0"> 8:00am - 7:00pm</p>
+                        <p class="mb-0"> 6:00pm - 11:00pm</p>
                     </div>
                     <div class="d-flex justify-content-between text-white mb-3">
-                        <h6 class="text-white mb-0">Sunday</h6>
-                        <p class="mb-0"> 8:00am - 5:00pm</p>
+                        <h6 class="text-white mb-0">Friday</h6>
+                        <p class="mb-0"> Closed</p>
                     </div>
                     @if (signInManager.IsSignedIn(User))
                     { @if (await userManager.IsInRoleAsync(applicationUser!, "User"))
