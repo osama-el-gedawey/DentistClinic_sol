@@ -5,7 +5,7 @@
     ApplicationUser applicationUser = await userManager.GetUserAsync(User) ?? new ApplicationUser();
 }
 
-<div class="card mt-5">
+<div class="card">
     <div class="good-morning-blk px-3">
         <div class="row">
             <div class="col-md-6 position-blk d-none d-lg-flex">
@@ -16,44 +16,53 @@
             <div class="col-12 col-lg-6">
                 <div class="morning-user ps-5">
                     
-                    <h2 style="margin-left:20px">Good Morning, 
+                    <h2 style="margin-left:20px">Good Morning, <br>
                         @if (await userManager.IsInRoleAsync(applicationUser!, "Doctor"))
                         {
-                            <span>Dr.Ahmed Bahnsawy</span>
+                            <span style="margin-left:50px">Dr.Ahmed Bahnsawy</span>
                         }
                         
                      </h2>
-                    <p style="margin-left:20px">Have a nice day at work</p>
+                    <p style="margin-left:50px">Have a nice day at work</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="card mt-5 p-5">
-    <h2 class="text-center mt-5" style="color:#2E37A4">Reservation Statistics</h2>
-    <canvas id="ReservationChart"></canvas>
-</div>
-<div class="card mt-5 p-5">
-    <h2 class="text-center mt-5" style="color:#2E37A4">Payment Statistics</h2>
-    <div class="w-50 mx-auto">
-        <canvas  id="PaymentChart"></canvas>
-    </div>
-    <canvas class="mt-5" id="Payment2Chart"></canvas>
-</div>
-<div class="card mt-5 p-5">
-    <h2 class="text-center mt-5" style="color:#2E37A4">Gender Statistics</h2>
-    <div class="w-50 mx-auto">
-        <canvas id="GenderChart"></canvas>
-    </div>
-    
-</div>
-<div class="card mt-5 p-5 ">
-    <h2 class="text-center mt-5" style="color:#2E37A4">Online & Offline Statistics</h2>
-    <div class="w-50 mx-auto">
-        <canvas id="PatientStatusChart"></canvas>
-    </div>
+<div class="clinic-analatics">
+    <div class="row">
+        <div class="col-7 d-flex flex-column">
+            <div class="card mt-5 p-5">
+                <h2 class="text-center mt-5" style="color:#2E37A4">Reservation Statistics</h2>
+                <canvas id="ReservationChart"></canvas>
+            </div>
+            <div class="card mt-5 p-5">
+                <h2 class="text-center mt-5" style="color:#2E37A4">Payment Statistics</h2>
+                <div class="w-50 mx-auto">
+                    <canvas id="PaymentChart"></canvas>
+                </div>
+                <canvas class="mt-5" id="Payment2Chart"></canvas>
+            </div>
 
+        </div>
+        <div class="col-5 d-flex flex-column">
+            <div class="card mt-5 p-5">
+                <h2 class="text-center mt-5" style="color:#2E37A4">Gender Statistics</h2>
+                <div class="w-50 mx-auto">
+                    <canvas id="GenderChart"></canvas>
+                </div>
+            </div>
+            <div class="card mt-5 p-5 ">
+                <h2 class="text-center mt-5" style="color:#2E37A4">Online & Offline Statistics</h2>
+                <div class="w-50 mx-auto">
+                    <canvas id="PatientStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
 <br />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

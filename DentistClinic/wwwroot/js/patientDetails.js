@@ -154,7 +154,8 @@ $(document).ready(function () {
 
 
     });
-    $(".js-delete-prescription").on("click", function () {
+
+    $("body").delegate(".js-delete-prescription", "click", function () {
         var deleteBtn = $(this);
 
         //handl confirmation sweetAlert2
