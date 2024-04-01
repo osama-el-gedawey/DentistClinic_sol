@@ -826,20 +826,10 @@ function onRequestSuccess(response) {
                 }
                 else {//create
                     $(".reports-container").append(itemObj);
+
+                    $(".reports-container .empty-report-msg").addClass("d-none");
                 }
             }
-            else { //prescriptions
-
-                if (updatedRaw != undefined) { //update
-                    $(updatedRaw).after(itemObj);
-                    updatedRaw.remove();
-                }
-                else {//create
-                    $(".prescription-container").append(itemObj);
-                }
-
-            }
-
 
             customLightBox();
 

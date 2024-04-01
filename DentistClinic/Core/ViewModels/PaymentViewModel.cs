@@ -10,7 +10,8 @@ namespace DentistClinic.Core.ViewModels
         [Required]
         public string Type { get; set; } = null!;
         [Required]
-        public double Value { get; set; }
+        [Range(5, int.MaxValue, ErrorMessage = "Minimum payment value is 5 LE")]
+        public double Value { get; set; } = 50;
         public string? Note { get; set; }
         public int? PatientId {  get; set; }
 

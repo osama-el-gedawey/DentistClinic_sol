@@ -37,6 +37,11 @@ $(document).ready(function () {
                             
                             deleteBtn.closest(".medical-report").remove();
                             //remove it from datatable
+
+                            //check if container is empty
+                            if (!$(".reports-container .medical-report").length) {
+                                $(".reports-container .empty-report-msg").removeClass("d-none");
+                            }
                         });
                     },
                     error: function (response) {
@@ -113,7 +118,6 @@ $(document).ready(function () {
     //Create new Prescription
     $(".js-create-prescription").on("click", function () {
 
-
         let createPrescriptionBtn = $(this); 
 
 
@@ -134,6 +138,7 @@ $(document).ready(function () {
                 }).then(() => {
 
                     $(".prescription-container").prepend(response);
+                    $(".prescription-container .empty-prescription-msg").addClass("d-none");
 
                     KTMenu.init();
                     KTMenu.initHandlers();
@@ -189,6 +194,11 @@ $(document).ready(function () {
 
                             deleteBtn.closest(".prescription-box").remove();
                             //remove it from datatable
+
+                            //check if container is empty
+                            if (!$(".prescription-container .prescription-box").length) {
+                                $(".prescription-container .empty-prescription-msg").removeClass("d-none");
+                            }
                         });
                     },
                     error: function (response) {

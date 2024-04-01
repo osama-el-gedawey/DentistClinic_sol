@@ -207,10 +207,18 @@
                 <!--begin::Row-->
                 <div class="row g-9 prescription-container">
                     <!--begin::Col-->
-                    @if (Model.Prescriptions.Count == 0)
-                    {
-                        <h6 class="text-center">There is no Prescriptions yet</h6>
-                    }
+                    <div class="alert alert-dismissible bg-light-primary  border border-primary  border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10 empty-prescription-msg @(Model.Prescriptions.Count > 0 ? "d-none" : "")">
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <h5 class="mb-1">There is no prescription yet</h5>
+                            <span>This alert is appear when no data is creating in page.</span>
+                        </div>
+                        <!--end::Content-->
+                        <!--begin::Close-->
+                        <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                            <i class="ki-duotone ki-cross fs-1 text-primary "><span class="path1"></span><span class="path2"></span></i>
+                        </button>
+                        <!--end::Close-->
+                    </div>
                     @foreach (var prescription in Model.Prescriptions!)
                     {
                         <partial name="_Prescription" model="prescription" />
@@ -467,10 +475,19 @@
                 <!--begin::Row-->
                 <div class="row g-9 reports-container">
                     <!--begin::Col-->
-                    @if (Model.MedicalHistories.Count == 0)
-                    {
-                        <h6 class="text-center">There is no Mdeical Reports yet</h6>
-                    }
+                    <div class="alert alert-dismissible bg-light-primary  border border-primary  border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10 empty-report-msg @(Model.MedicalHistories.Count > 0 ? "d-none" : "")">
+                        <div class="d-flex flex-column pe-0 pe-sm-10">
+                            <h5 class="mb-1">There is no Medical Report yet</h5>
+                            <span>This alert is appear when no data is creating in page.</span>
+                        </div>
+                        <!--end::Content-->
+                        <!--begin::Close-->
+                        <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                            <i class="ki-duotone ki-cross fs-1 text-primary "><span class="path1"></span><span class="path2"></span></i>
+                        </button>
+                        <!--end::Close-->
+                    </div>
+
                     @foreach (var medicalHistory in Model.MedicalHistories!)
                     {
                         <partial name="_MdeicalReport" model="medicalHistory" />
