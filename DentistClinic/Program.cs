@@ -6,7 +6,8 @@ using DentistClinic.Core.Models;
 using DentistClinic.Data.Context;
 using DentistClinic.Services.Interfaces;
 using DentistClinic.Services.Repository;
-
+using DentistClinic.Settings;
+using Microsoft.AspNetCore.Identity.UI.Services;
 namespace DentistClinic
 {
     public class Program
@@ -32,6 +33,7 @@ namespace DentistClinic
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
                 options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedAccount = true;
 
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -68,8 +70,13 @@ namespace DentistClinic
             builder.Services.AddScoped<IMedicinePrescriptionRepository, MedicinePrescriptionRepository>();
             builder.Services.AddScoped<IAnalysisPrescriptionRepository, AnalysisPrescriptionRepository>();
             builder.Services.AddScoped<IXraysPrescriptionRepository, XraysPrescriptionRepository>();
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddScoped<IEmailBodyBuilder, EmailBodyBuilder>();
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 
             var app = builder.Build();
 

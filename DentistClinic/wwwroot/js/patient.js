@@ -55,12 +55,13 @@ $(document).ready(function () {
                 "name": "FullName",
                 "className": "d-flex align-items-center",
                 "render": function (data, type, row) {
+                    console.log(row.profilePicture);
                     return `
                             <!--begin:: Patient -->
                             <div class="symbol  symbol-50px overflow-hidden me-3">
                                 <a href="/Patients/Details/${row.id}">
                                     <div class="symbol-label">
-                                        <img src="${(row.profilePicture === null ? '/assets/images/user.jpg' : row.profilePicture)}" alt="Cover" class="w-100">
+                                        <img src="${(row.profilePicture != null ? `data:image /*;base64,${row.profilePicture}` : `/assets/images/user.jpg`)}" alt="Cover" class="w-100">
                                     </div>
                                 </a>
                             </div>

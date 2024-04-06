@@ -1,6 +1,6 @@
 ﻿
 
-@inject SignInManager<ApplicationUser> SignInManager;
+@inject SignInManager<ApplicationUser> signInManager;
 @inject UserManager<ApplicationUser> userManger;
 @{
     var applicationUser = await userManger.GetUserAsync(User) ?? new ApplicationUser();
@@ -38,7 +38,7 @@
     <div class="d-flex flex-column flex-root">
         <!--begin::Page-->
         <div class="page d-flex flex-row flex-column-fluid">
-            @if (await userManger.IsInRoleAsync(applicationUser, "User") == false)
+            @if (await userManger.IsInRoleAsync(applicationUser, "User") == false && signInManager.IsSignedIn(User))
             {
                 <!--begin::Wrapper-->
                 <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">

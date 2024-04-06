@@ -1,5 +1,5 @@
 ﻿using DentistClinic.Services.Interfaces;
-
+using Microsoft.AspNetCore.Identity.UI.Services;
 namespace DentistClinic.Services.Repository
 {
     public class UnitOfWork:IUnitOfWork
@@ -19,8 +19,11 @@ namespace DentistClinic.Services.Repository
         public IMedicinePrescriptionRepository medicinePrescriptionRepository { get; set; }
         public IAnalysisPrescriptionRepository analysisPrescriptionRepository { get; set; }
         public IXraysPrescriptionRepository xraysPrescriptionRepository { get; set; }
+        public IEmailBodyBuilder emailBodyBuilder { get; set; }
+        public IEmailSender emailSender { get; set; }
+        public INotificationRepository notificationRepository { get; set; }
 
-        public UnitOfWork(IPatientRepository patientRepository, IAppointmentRepository appointmentRepository, IMedicineRepository medicineRepository, IXrayRepository xrayRepository, IAnalysisRepository analysisRepository, IContactRepository contactRepository, IPaymentsRepository paymentsRepository, IMedicalHistoryRepository medicalHistoryRepository, IMedicalHistoryImageRepository medicalHistoryImageRepository, ITreatmentPlansRepository treatmentPlansRepository = null, IToothRepository toothRepository = null, IPrescriptionRepository prescriptionRepository = null, IMedicinePrescriptionRepository medicinePrescriptionRepository = null, IAnalysisPrescriptionRepository analysisPrescriptionRepository = null, IXraysPrescriptionRepository xraysPrescriptionRepository = null)
+        public UnitOfWork(IPatientRepository patientRepository, IAppointmentRepository appointmentRepository, IMedicineRepository medicineRepository, IXrayRepository xrayRepository, IAnalysisRepository analysisRepository, IContactRepository contactRepository, IPaymentsRepository paymentsRepository, IMedicalHistoryRepository medicalHistoryRepository, IMedicalHistoryImageRepository medicalHistoryImageRepository, ITreatmentPlansRepository treatmentPlansRepository, IToothRepository toothRepository, IPrescriptionRepository prescriptionRepository, IMedicinePrescriptionRepository medicinePrescriptionRepository, IAnalysisPrescriptionRepository analysisPrescriptionRepository, IXraysPrescriptionRepository xraysPrescriptionRepository, IEmailBodyBuilder emailBodyBuilder, IEmailSender emailSender, INotificationRepository notificationRepository)
         {
             this.patientRepository = patientRepository;
             this.appointmentRepository = appointmentRepository;
@@ -37,6 +40,9 @@ namespace DentistClinic.Services.Repository
             this.medicinePrescriptionRepository = medicinePrescriptionRepository;
             this.analysisPrescriptionRepository = analysisPrescriptionRepository;
             this.xraysPrescriptionRepository = xraysPrescriptionRepository;
+            this.emailBodyBuilder = emailBodyBuilder;
+            this.emailSender = emailSender;
+            this.notificationRepository = notificationRepository;
         }
 
 

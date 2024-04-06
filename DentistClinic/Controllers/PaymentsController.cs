@@ -41,7 +41,15 @@ namespace DentistClinic.Controllers
                     return BadRequest("something is wrong..!!");
                 }
                 if (payment.Type == "Pay"|| payment.Type == "Adjustment -ve") {
+
+                    if (patient.CurentBalance < payment.Value)
+                    {
+                        return BadRequest("payment value must be less current balance..!!");
+                    }
+
                     payment.Value = -payment.Value;
+
+
                 }
 
                 PaymentRecord model = new PaymentRecord();

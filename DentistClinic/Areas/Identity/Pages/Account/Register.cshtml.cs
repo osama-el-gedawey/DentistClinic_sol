@@ -22,6 +22,8 @@ using Microsoft.Extensions.Logging;
 using System.Reflection.Metadata;
 using DentistClinic.Core.Constants;
 using System.Net.Mail;
+using Bookify.Web.Core.Const;
+using DentistClinic.Services.Interfaces;
 
 
 
@@ -35,21 +37,21 @@ namespace DentistClinic.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
-        public RegisterModel(
+		private readonly IUnitOfWork _unitOfWork;
+		public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+			IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
-        }
+			_unitOfWork = unitOfWork;
+		}
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -102,6 +104,7 @@ namespace DentistClinic.Areas.Identity.Pages.Account
 
             [Required]
             [StringLength(100, ErrorMessage = Errors.passwordLengthMSG, MinimumLength = 6)]
+            [RegularExpression(@".*[a-z]+.*", ErrorMessage = "Password must has at lease one lowercase char")]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -150,49 +153,58 @@ namespace DentistClinic.Areas.Identity.Pages.Account
                         ModelState.AddModelError(string.Empty, "Birth date cannot be in the future.");
                         return Page();
                     }
-                    //var user = CreateUser();
-
-                    //await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                    //await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                     ApplicationUser applicationUser = new ApplicationUser
-                {
-                    UserName = new MailAddress(Input.Email).User,
-                    Email = Input.Email,
-                    PhoneNumber = Input.PhoneNumber,
-                    Patient = new Patient 
                     {
-                        FirstName = Input.FirstName,
-                        LastName = Input.LastName,
-                        FullName = Input.FirstName + " " + Input.LastName,
-                        Gender = Input.Gender,
+                        UserName = new MailAddress(Input.Email).User,
+                        Email = Input.Email,
                         PhoneNumber = Input.PhoneNumber,
-                        BirthDate = Input.Birthdate,
-                        Occupation = Input.Occuopation,
-                        Address = Input.Address
-                    }
-                };
+                        Patient = new Patient 
+                        {
+                            FirstName = Input.FirstName,
+                            LastName = Input.LastName,
+                            FullName = Input.FirstName + " " + Input.LastName,
+                            Gender = Input.Gender,
+                            PhoneNumber = Input.PhoneNumber,
+                            BirthDate = Input.Birthdate,
+                            Occupation = Input.Occuopation,
+                            Address = Input.Address
+                        }
+                    };
                 var result = await _userManager.CreateAsync(applicationUser, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
                     await _userManager.AddToRoleAsync(applicationUser, Helper.Roles.User.ToString());
-                    //var userId = await _userManager.GetUserIdAsync(applicationUser);
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    //    protocol: Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+						var userId = await _userManager.GetUserIdAsync(applicationUser);
+						var email = await _userManager.GetEmailAsync(applicationUser);
+						var code = await _userManager.GenerateEmailConfirmationTokenAsync(applicationUser);
+						code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+						var callbackUrl = Url.Page(
+							"/Account/ConfirmEmail",
+							pageHandler: null,
+							values: new { area = "Identity", userId = userId, code = code },
+							protocol: Request.Scheme);
+
+						var placeholders = new Dictionary<string, string>()
+			            {
+				            { "header", $"Hey {applicationUser.Patient.FullName}," },
+				            { "body", "please verify your email" },
+				            { "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
+				            { "linkTitle", "Verify Email" }
+			            };
+
+						var htmlBody = _unitOfWork.emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeholders);
+
+						await _unitOfWork.emailSender.SendEmailAsync(email, "Dental Clinic Verification Email", htmlBody);
+
+						return RedirectToPage("ResendEmailConfirmation", new { email = Input.Email});
                     }
                     else
                     {

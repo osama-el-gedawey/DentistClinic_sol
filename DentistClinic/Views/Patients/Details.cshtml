@@ -15,7 +15,14 @@
         <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
             <!--begin::Image-->
             <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
-                <img class="mw-50px mw-lg-75px patient-image" src="~/assets/images/user.jpg" alt="image">
+                @if (@Model.ProfilePicture != null)
+                {
+                    <img class="mw-50px mw-lg-75px patient-image" src="data:image /*;base64,@(Convert.ToBase64String(@Model.ProfilePicture))" alt="image" />
+                }
+                else
+                {
+                    <img class="mw-50px mw-lg-75px patient-image" src="~/assets/images/user.jpg" alt="image" />
+                }
             </div>
             <!--end::Image-->
             <!--begin::Wrapper-->

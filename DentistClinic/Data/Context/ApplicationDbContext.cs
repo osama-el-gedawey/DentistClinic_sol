@@ -27,6 +27,7 @@ namespace DentistClinic.Data.Context
         public virtual DbSet<XrayPrescriptionImage> XrayPrescriptionImages { get; set; }
         public virtual DbSet<ContactMsg> ContactMsgs { get; set; }
         public virtual DbSet<Tooth> Teeth { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
 
         public ApplicationDbContext()
         {

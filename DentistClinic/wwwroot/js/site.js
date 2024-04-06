@@ -1,4 +1,5 @@
-﻿//constants
+﻿
+//constants
 let table;
 let datatable;
 let datatablePayments;
@@ -246,7 +247,7 @@ var KTDatatables = function () {
         datatable = $(table).DataTable({
             "info": true,
             "pageLength": 5,
-            order: [[1, 'asc']],
+            order: [[0, 'asc']],
             lengthMenu: [5, 10, 15, 25, 50, 75, 100],
             'drawCallback': function () {
                 KTMenu.createInstances();
@@ -254,13 +255,18 @@ var KTDatatables = function () {
             columnDefs: [
                 {
                     target: [-1],
-                    searchable: false,
-                    orderable: false
+                    searchable: true,
+                    orderable: true
                 }
             ],
         });
     }
 
+    const printedRow = $(".printedRow");
+    const printedRowArr = [];
+    Array.from(printedRow).forEach((row , index) => {
+        printedRowArr.push(index)
+    });
     // Hook export buttons
     var exportButtons = () => {
         const documentTitle = $(".js-datatables").data("document-title");
@@ -270,28 +276,28 @@ var KTDatatables = function () {
                     extend: 'copyHtml5',
                     title: documentTitle,
                     exportOptions: {
-                        columns: [1, 2, 3, 4]
+                        columns: printedRowArr
                     }
                 },
                 {
                     extend: 'excelHtml5',
                     title: documentTitle,
                     exportOptions: {
-                        columns: [1, 2, 3, 4]
+                        columns: printedRowArr
                     }
                 },
                 {
                     extend: 'csvHtml5',
                     title: documentTitle,
                     exportOptions: {
-                        columns: [1, 2, 3, 4]
+                        columns: printedRowArr
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     title: documentTitle,
                     exportOptions: {
-                        columns: [1, 2, 3, 4]
+                        columns: printedRowArr
                     }
                 }
             ]
@@ -302,11 +308,10 @@ var KTDatatables = function () {
         exportButtons.forEach(exportButton => {
             exportButton.addEventListener('click', e => {
                 e.preventDefault();
-
+                
                 // Get clicked export value
                 const exportValue = e.target.getAttribute('data-kt-export');
                 const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
-
                 // Trigger click event on hidden datatable export buttons
                 target.click();
             });
@@ -887,3 +892,34 @@ function onRequestFailure(response) {
 function onRequestComplete() {
     $("body :submit").removeAttr("disabled").removeAttr("data-kt-indicator");
 };
+
+function ConfrimNotification(notificationId, notifyId) {
+
+
+
+    const notificationBox = $(`#${notificationId}`);
+
+    const confirmBtn = notificationBox.find(".js-confirm-notification");
+
+
+    $.get({
+
+        url: `/Home/ConfirmNotification/${notifyId}`,
+        success: function (response) {
+
+            $(confirmBtn).hide();
+
+            notificationBox.css("background-color", "#FFF");
+
+            if (!response.hasNotification) {
+                $("#dotRed").remove();
+            }
+        },
+        error: function () {
+            console.log("Error");
+        }
+
+    });
+
+
+}

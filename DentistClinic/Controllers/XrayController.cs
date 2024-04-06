@@ -2,10 +2,8 @@
 using DentistClinic.Core.ViewModels;
 using DentistClinic.CustomeValidation;
 using DentistClinic.Services.Interfaces;
-using DentistClinic.Services.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace DentistClinic.Controllers
 {

@@ -36,13 +36,27 @@
                 <h2 class="text-center mt-5" style="color:#2E37A4">Reservation Statistics</h2>
                 <canvas id="ReservationChart"></canvas>
             </div>
-            <div class="card mt-5 p-5">
-                <h2 class="text-center mt-5" style="color:#2E37A4">Payment Statistics</h2>
-                <div class="w-50 mx-auto">
-                    <canvas id="PaymentChart"></canvas>
+
+            @if (await userManager.IsInRoleAsync(applicationUser!, "Doctor"))
+            {
+                <div class="card mt-5 p-5">
+                    <h2 class="text-center mt-5" style="color:#2E37A4">Payment Statistics</h2>
+                    <div class="w-50 mx-auto">
+                        <canvas id="PaymentChart"></canvas>
+                    </div>
+                    <canvas class="mt-5" id="Payment2Chart"></canvas>
                 </div>
-                <canvas class="mt-5" id="Payment2Chart"></canvas>
-            </div>
+            }
+            else
+            {
+                <div class="card mt-5 p-5 d-none">
+                    <h2 class="text-center mt-5" style="color:#2E37A4">Payment Statistics</h2>
+                    <div class="w-50 mx-auto">
+                        <canvas id="PaymentChart"></canvas>
+                    </div>
+                    <canvas class="mt-5" id="Payment2Chart"></canvas>
+                </div>
+            }
 
         </div>
         <div class="col-5 d-flex flex-column">

@@ -22,6 +22,7 @@ namespace DentistClinic.Core.Models
         public virtual ICollection<Tplans> Tplans { get; set; } = new List<Tplans>();
         public virtual ICollection<MedicalHistory> MedicalHistories { get; set; } = new List<MedicalHistory>();
         public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+        public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     }
 }

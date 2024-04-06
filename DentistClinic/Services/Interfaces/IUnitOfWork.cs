@@ -1,4 +1,6 @@
-﻿namespace DentistClinic.Services.Interfaces
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+
+namespace DentistClinic.Services.Interfaces
 {
     public interface IUnitOfWork
     {
@@ -17,5 +19,9 @@
         public IMedicinePrescriptionRepository medicinePrescriptionRepository { get; set; }
         public IAnalysisPrescriptionRepository analysisPrescriptionRepository { get; set; }
         public IXraysPrescriptionRepository xraysPrescriptionRepository { get; set; }
+        public IEmailBodyBuilder emailBodyBuilder { get; set; }
+        public IEmailSender emailSender { get; set; }
+        public INotificationRepository notificationRepository { get; set; }
+
     }
 }

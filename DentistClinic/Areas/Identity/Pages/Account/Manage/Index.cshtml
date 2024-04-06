@@ -2,16 +2,18 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
     Layout = "/Views/Shared/_Layout.cshtml";
+
+    var pPicture = (Model.Input.ProfilePicture != null) ? "" : "/assets/images/user.jpg";
 }
 
 <div class="content">
-
     <div class="card">
         <div class="d-flex flex-column flex-md-row rounded border p-10">
             <ul class="nav nav-tabs nav-pills flex-row border-0 flex-md-column me-5 mb-3 mb-md-0 fs-6 min-w-lg-200px">
                 <li class="nav-item w-100 me-0 mb-md-2">
-                    <a class="nav-link w-100 active btn btn-flex btn-active-light-success" data-bs-toggle="tab" href="#kt_vtab_pane_4">
+                    <a class="nav-link w-100 btn btn-flex btn-active-light-success @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
                         <span class="d-flex flex-column align-items-start">
                             <span class="fs-6 fw-bold">Personal Information</span>
                             <span class="fs-7">Profile</span>
@@ -19,7 +21,7 @@
                     </a>
                 </li>
                 <li class="nav-item w-100 me-0 mb-md-2">
-                    <a class="nav-link w-100 btn btn-flex btn-active-light-info" data-bs-toggle="tab" href="#kt_vtab_pane_5">
+                    <a class="nav-link w-100 btn btn-flex btn-active-light-info @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">
                         <span class="d-flex flex-column align-items-start">
                             <span class="fs-6 fw-bold">Change Email</span>
                             <span class="fs-7">Profile</span>
@@ -27,7 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item w-100">
-                    <a class="nav-link w-100 btn btn-flex btn-active-light-danger" data-bs-toggle="tab" href="#kt_vtab_pane_6">
+                    <a class="nav-link w-100 btn btn-flex btn-active-light-danger @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
                         <span class="d-flex flex-column align-items-start">
                             <span class="fs-6 fw-bold">Change Password</span>
                             <span class="fs-7">Profile</span>
@@ -37,28 +39,9 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="kt_vtab_pane_4" role="tabpanel">
-                    <div class="bg-light-primary border border-primary border-3 border-dashed d-flex justify-content-between rounded w-100 p-5 mb-10">
-                        <div class="d-flex align-items-center">
-                            <div class="symbol symbol-40px me-4">
-                                <div class="symbol-label fs-2 fw-semibold">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen002.svg-->
-                                    <span class="svg-icon svg-icon-2 svg-icon-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="none">
-                                            <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </div>
-                            </div>
-                            <!--begin::Content-->
-                            <div class="d-flex flex-column pe-0 pe-sm-10">
-                                <h5 class="mb-1">Change Profile information</h5>
-                            </div>
-                            <!--end::Content-->
-                        </div>
-                    </div>
-                    <div class="card p-3">
+                    <div class="card p-5" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;">
                         <form id="profile-form" method="post" enctype="multipart/form-data">
+                            <partial name="_StatusMessage" for="StatusMessage" />
                             <div class="profile-img-wrap">
 
                                 <!--begin::Image input placeholder-->
@@ -72,68 +55,116 @@
                                     }
                                 </style>
                                 <!--end::Image input placeholder-->
-                                <!--begin::Image input-->
-                                <div class="image-input image-input-empty mb-4" data-kt-image-input="true" style="background-image: url(/assets/images/user.jpg)">
-                                    <!--begin::Image preview wrapper-->
-                                    <div class="image-input-wrapper w-125px h-125px"></div>
-                                    <!--end::Image preview wrapper-->
-                                    <!--begin::Edit button-->
-                                    <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
-                                           data-kt-image-input-action="change"
-                                           data-bs-toggle="tooltip"
-                                           data-bs-dismiss="click"
-                                           title="Change avatar">
-                                        <i class="fa-solid fa-pen"></i>
 
-                                        <!--begin::Inputs-->
-                                        <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
-                                        <input type="hidden" name="avatar_remove" />
-                                        <!--end::Inputs-->
-                                    </label>
-                                    <!--end::Edit button-->
-                                    <!--begin::Cancel button-->
-                                    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
-                                          data-kt-image-input-action="cancel"
-                                          data-bs-toggle="tooltip"
-                                          data-bs-dismiss="click"
-                                          title="Cancel avatar">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </span>
-                                    <!--end::Cancel button-->
-                                    <!--begin::Remove button-->
-                                    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
-                                          data-kt-image-input-action="remove"
-                                          data-bs-toggle="tooltip"
-                                          data-bs-dismiss="click"
-                                          title="Remove avatar">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </span>
-                                    <!--end::Remove button-->
-                                </div>
-                                <!--end::Image input-->
+                                @if(Model.Input.ProfilePicture != null)
+                                {
+                                    <!--begin::Image input-->
+                                    <div class="image-input image-input-empty mb-4" data-kt-image-input="true" style="background-image: url('data:image /*;base64,@(Convert.ToBase64String(Model.Input.ProfilePicture))')">
+                                        <!--begin::Image preview wrapper-->
+                                        <div class="image-input-wrapper w-125px h-125px"></div>
+                                        <!--end::Image preview wrapper-->
+                                        <!--begin::Edit button-->
+                                        <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                                               data-kt-image-input-action="change"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-dismiss="click"
+                                               title="Change avatar">
+                                            <i class="fa-solid fa-pen"></i>
+
+                                            <!--begin::Inputs-->
+                                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="avatar_remove" />
+                                            <!--end::Inputs-->
+                                        </label>
+                                        <!--end::Edit button-->
+                                        <!--begin::Cancel button-->
+                                        <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                                              data-kt-image-input-action="cancel"
+                                              data-bs-toggle="tooltip"
+                                              data-bs-dismiss="click"
+                                              title="Cancel avatar">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </span>
+                                        <!--end::Cancel button-->
+                                        <!--begin::Remove button-->
+                                        <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                                              data-kt-image-input-action="remove"
+                                              data-bs-toggle="tooltip"
+                                              data-bs-dismiss="click"
+                                              title="Remove avatar">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </span>
+                                        <!--end::Remove button-->
+                                    </div>
+                                    <!--end::Image input-->
+                                }
+                                else
+                                {
+                                    <!--begin::Image input-->
+                                    <div class="image-input image-input-empty mb-4" data-kt-image-input="true" style="background-image: url('/assets/images/user.jpg')">
+                                        <!--begin::Image preview wrapper-->
+                                        <div class="image-input-wrapper w-125px h-125px"></div>
+                                        <!--end::Image preview wrapper-->
+                                        <!--begin::Edit button-->
+                                        <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                                               data-kt-image-input-action="change"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-dismiss="click"
+                                               title="Change avatar">
+                                            <i class="fa-solid fa-pen"></i>
+
+                                            <!--begin::Inputs-->
+                                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="avatar_remove" />
+                                            <!--end::Inputs-->
+                                        </label>
+                                        <!--end::Edit button-->
+                                        <!--begin::Cancel button-->
+                                        <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                                              data-kt-image-input-action="cancel"
+                                              data-bs-toggle="tooltip"
+                                              data-bs-dismiss="click"
+                                              title="Cancel avatar">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </span>
+                                        <!--end::Cancel button-->
+                                        <!--begin::Remove button-->
+                                        <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                                              data-kt-image-input-action="remove"
+                                              data-bs-toggle="tooltip"
+                                              data-bs-dismiss="click"
+                                              title="Remove avatar">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </span>
+                                        <!--end::Remove button-->
+                                    </div>
+                                    <!--end::Image input-->
+                                }
                             </div>
+                            <small class="text-muted">Profile picture must be less than 2mb and extension jpg , png , jpeg</small>
+
                             <div class="profile-basic">
                                 <div class="row">
                                     <div class="col-md-6 mb-7">
                                         <!--begin::Input group-->
                                         <div class="form-floating">
-                                            <input asp-for="Input.Username" class="form-control" id="FirstName" />
-                                            <label for="FirstName" asp-for="Input.Username">First Name:</label>
+                                            <input asp-for="Input.FirstName" class="form-control form-control-solid" id="FirstName" />
+                                            <label for="FirstName" asp-for="Input.FirstName">First Name:</label>
                                         </div>
-                                        <span asp-validation-for="Input.Username" class="text-danger"></span>
+                                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                                     </div>
                                     <div class="col-md-6 mb-7">
                                         <!--begin::Input group-->
                                         <div class="form-floating">
-                                            <input asp-for="Input.Username" class="form-control" id="LastName" />
-                                            <label for="FirstName" asp-for="Input.Username">Last Name:</label>
+                                            <input asp-for="Input.LastName" class="form-control form-control-solid" id="LastName" />
+                                            <label for="FirstName" asp-for="Input.LastName">Last Name:</label>
                                         </div>
-                                        <span asp-validation-for="Input.Username" class="text-danger"></span>
+                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
                                     </div>
                                     <div class="col-md-6 mb-7">
                                         <!--begin::Input group-->
                                         <div class="form-floating">
-                                            <input asp-for="Input.Address" class="form-control" id="Address" />
+                                            <input asp-for="Input.Address" class="form-control form-control-solid" id="Address" />
                                             <label for="Address" asp-for="Input.Address">Address:</label>
                                         </div>
                                         <span asp-validation-for="Input.Address" class="text-danger"></span>
@@ -141,7 +172,7 @@
                                     <div class="col-md-6 mb-7">
                                         <!--begin::Input group-->
                                         <div class="form-floating">
-                                            <input asp-for="Input.PhoneNumber" class="form-control" id="PhoneNumber" />
+                                            <input asp-for="Input.PhoneNumber" class="form-control form-control-solid" id="PhoneNumber" />
                                             <label for="PhoneNumber" asp-for="Input.PhoneNumber">Phone Number:</label>
                                         </div>
                                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
@@ -149,14 +180,22 @@
                                     <div class="col-md-6 mb-7">
                                         <!--begin::Input group-->
                                         <div class="form-floating">
-                                            <input asp-for="Input.Birthdate" class="form-control patient-birthdate" id="Birthdate" />
+                                            <input asp-for="Input.Birthdate" class="form-control patient-birthdate form-control-solid" id="Birthdate" />
                                             <label for="Birthdate" asp-for="Input.Birthdate">Birth Date:</label>
                                         </div>
                                         <span asp-validation-for="Input.Birthdate" class="text-danger"></span>
                                     </div>
                                     <div class="col-md-6 mb-7">
+                                        <!--begin::Input group-->
                                         <div class="form-floating">
-                                            <select class="form-select" asp-for="Input.Gender" data-control="select2" data-placeholder="Select an Gender">
+                                            <input asp-for="Input.Occuopation" class="form-control form-control-solid" id="Occupation" />
+                                            <label for="Occupation" asp-for="Input.Occuopation">Occuopation:</label>
+                                        </div>
+                                        <span asp-validation-for="Input.Occuopation" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-12 mb-7">
+                                        <div class="form-floating">
+                                            <select class="form-select form-select-solid" asp-for="Input.Gender" data-control="select2" data-placeholder="Select an Gender">
                                                 <option value="">Select Gendar</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
@@ -168,28 +207,85 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center ">
-                                <button class="btn btn-primary submit-btn mb-4" type="submit">Save Changes</button>
+                            <div class="text-end">
+                                <button class="btn btn-warning btn-sm mb-2" type="submit">Save Changes</button>
                             </div>
                         </form>
                     </div>
+                    <div class="card  mb-5 mb-xl-10 mt-5" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px !important;">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                            <div class="card-title m-0">
+                                <h3 class="fw-bold m-0">Sign-in Method</h3>
+                            </div>
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Content-->
+                        <div id="kt_account_settings_signin_method" class="collapse show">
+                            <!--begin::Card body-->
+                            <div class="card-body border-top p-9">
+                                <!--begin::Email Address-->
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <!--begin::Label-->
+                                    <div id="kt_signin_email">
+                                        <div class="fs-6 fw-bold mb-1">Email Address</div>
+                                        <div class="fw-semibold text-gray-600">
+                                            @Model.Input.Email
+                                        </div>
+                                    </div>
+                                    <!--end::Label-->
+                                    <!--begin::Action-->
+                                    <div id="kt_signin_email_button" class="ms-auto">
+                                        <a asp-page="./Email" class="btn btn-light btn-active-light-primary">Change Email</a>
+                                    </div>
+                                    <!--end::Action-->
+                                </div>
+                                <!--end::Email Address-->
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed my-6"></div>
+                                <!--end::Separator-->
+                                <!--begin::Password-->
+                                <div class="d-flex flex-wrap align-items-center mb-10">
+                                    <!--begin::Label-->
+                                    <div id="kt_signin_password">
+                                        <div class="fs-6 fw-bold mb-1">Password</div>
+                                        <div class="fw-semibold text-gray-600">************</div>
+                                    </div>
+                                    <!--end::Label-->
+                                    <!--begin::Action-->
+                                    <div id="kt_signin_password_button" class="ms-auto">
+                                        <a asp-page="./ChangePassword" class="btn btn-light btn-active-light-primary">Change Password</a>
+                                    </div>
+                                    <!--end::Action-->
+                                </div>
+                                <!--end::Password-->
+                                <!--begin::Notice-->
+                                <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed  p-6">
+                                    <!--begin::Icon-->
+                                    <i class="ki-duotone ki-shield-tick fs-2tx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>        <!--end::Icon-->
+                                    <!--begin::Wrapper-->
+                                    <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                                        <!--begin::Content-->
+                                        <div class="mb-3 mb-md-0 fw-semibold">
+                                            <h4 class="text-gray-900 fw-bold">Secure Your Account</h4>
 
-                </div>
-
-                <div class="tab-pane fade" id="kt_vtab_pane_5" role="tabpanel">
-                    Nulla est ullamco ut irure incididunt nulla Lorem Lorem minim irure officia enim reprehenderit.
-                    Magna duis labore cillum sint adipisicing exercitation ipsum. Nostrud ut anim non exercitation velit laboris fugiat cupidatat.
-                    Commodo esse dolore fugiat sint velit ullamco magna consequat voluptate minim amet aliquip ipsum aute laboris nisi.
-                    Labore labore veniam irure irure ipsum pariatur mollit magna in cupidatat dolore magna irure esse tempor ad mollit.
-                    Dolore commodo nulla minim amet ipsum officia consectetur amet ullamco voluptate nisi commodo ea sit eu.
-                </div>
-
-                <div class="tab-pane fade" id="kt_vtab_pane_6" role="tabpanel">
-                    Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do.
-                    Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat.
-                    eserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor.
-                    Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt
-                    ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet.
+                                            <div class="fs-6 text-gray-700 pe-7">Two-factor authentication adds an extra layer of security to your account. To log in, in addition you'll need to provide a 6 digit code</div>
+                                        </div>
+                                        <!--end::Content-->
+                                        <!--begin::Action-->
+                                        <a href="#" class="btn btn-primary px-6 align-self-center text-nowrap" data-bs-toggle="modal" data-bs-target="#kt_modal_two_factor_authentication">
+                                            Enable
+                                        </a>
+                                        <!--end::Action-->
+                                    </div>
+                                    <!--end::Wrapper-->
+                                </div>
+                                <!--end::Notice-->
+                            </div>
+                            <!--end::Card body-->
+                        </div>
+                        <!--end::Content-->
+                    </div>
                 </div>
             </div>
         </div>
@@ -336,10 +432,17 @@
     </form> *@
 </div>
 
-<script>
-    $(".patient-birthdate").flatpickr();
-</script>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        var maxYear = (new Date().getFullYear() - 2)
+
+        $(".patient-birthdate").flatpickr({
+            dateFormat: "Y-m-d",
+            maxDate: `${maxYear}-01-01`,
+        });
+    </script>
 }

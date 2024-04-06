@@ -7,7 +7,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Bookify.Web.Core.Const;
 using DentistClinic.Core.Models;
+using DentistClinic.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,16 +22,17 @@ namespace DentistClinic.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IUnitOfWork unitOfWork
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -74,14 +77,14 @@ namespace DentistClinic.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(ApplicationUser user)
+        private async Task LoadAsync(ApplicationUser user, string nemail = null)
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;
 
-            Input = new InputModel
+            Input = new InputModel()
             {
-                NewEmail = email,
+                NewEmail = nemail
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -124,13 +127,22 @@ namespace DentistClinic.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                var placeholders = new Dictionary<string, string>()
+                {
+                    { "header" , $"Hey {user.Patient.FullName}, thanks for joining us!" },
+                    { "body" , "please confirm your email" },
+                    { "url" , $"{HtmlEncoder.Default.Encode(callbackUrl!)}"},
+                    { "linkTitle" , "Active Account!" }
+                };
+
+                var htmlBody = _unitOfWork.emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeholders);
+
+                await _unitOfWork.emailSender.SendEmailAsync(Input.NewEmail, "Dental Clinic Confirmation Email", htmlBody);
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
-                return RedirectToPage();
+                await LoadAsync(user , Input.NewEmail);
+                return Page();
             }
 
             StatusMessage = "Your email is unchanged.";
@@ -160,10 +172,18 @@ namespace DentistClinic.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            var placeholders = new Dictionary<string, string>()
+            {
+                { "header", $"Hey {user.Patient.FullName}," },
+                { "body", "please verify your email" },
+                { "url", $"{HtmlEncoder.Default.Encode(callbackUrl!)}" },
+                { "linkTitle", "Verify Email" }
+            };
+
+            var htmlBody = _unitOfWork.emailBodyBuilder.GetEmailBody(EmailTemplates.Email, placeholders);
+
+                await _unitOfWork.emailSender.SendEmailAsync(email, "Dental Clinic Verification Email", htmlBody);
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

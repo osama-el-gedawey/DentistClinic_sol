@@ -1,44 +1,269 @@
 ﻿@page
-@model EmailModel
+@model EmailModel;
+@inject UserManager<ApplicationUser> userManager;
 @{
     ViewData["Title"] = "Manage Email";
     ViewData["ActivePage"] = ManageNavPages.Email;
+    Layout = "/Views/Shared/_Layout.cshtml";
+    var currentUser = await userManager.GetUserAsync(User);
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="email-form" method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            @if (Model.IsEmailConfirmed)
-            {
-                <div class="form-floating mb-3 input-group">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
-                        <div class="input-group-append">
-                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
-                        </div>
-                    <label asp-for="Email" class="form-label"></label>
-                </div>
-            }
-            else
-            {
-                <div class="form-floating mb-3">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
-                    <label asp-for="Email" class="form-label"></label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                </div>
-            }
-            <div class="form-floating mb-3">
-                <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
-                <label asp-for="Input.NewEmail" class="form-label"></label>
-                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
-            </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
-        </form>
-    </div>
-</div>
+<div class="content">
+    <div class="card">
+        <div class="d-flex flex-column flex-md-row rounded border p-10">
+            <ul class="nav nav-tabs nav-pills flex-row border-0 flex-md-column me-5 mb-3 mb-md-0 fs-6 min-w-lg-200px">
+                <li class="nav-item w-100 me-0 mb-md-2">
+                    <a class="nav-link w-100 btn btn-flex btn-active-light-success @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
+                        <span class="d-flex flex-column align-items-start">
+                            <span class="fs-6 fw-bold">Personal Information</span>
+                            <span class="fs-7">Profile</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item w-100 me-0 mb-md-2">
+                    <a class="nav-link w-100 btn btn-flex btn-active-light-info @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">
+                        <span class="d-flex flex-column align-items-start">
+                            <span class="fs-6 fw-bold">Change Email</span>
+                            <span class="fs-7">Profile</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item w-100">
+                    <a class="nav-link w-100 btn btn-flex btn-active-light-danger @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
+                        <span class="d-flex flex-column align-items-start">
+                            <span class="fs-6 fw-bold">Change Password</span>
+                            <span class="fs-7">Profile</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content w-100" id="myTabContent">
+                <div class="card p-5" style="box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;">
+                    <!--begin::Form-->
+                    <form class="form fv-plugins-bootstrap5 fv-plugins-framework" id="email-form" method="post">
+                        <!--begin::Card body-->
+                        <div class="card-body p-9">
+                            <partial name="_StatusMessage" for="StatusMessage" />
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            @if (Model.IsEmailConfirmed)
+                            {
+                                <!--begin::Input group-->
+                                <div class="row mb-6">
+                                    <!--begin::Col-->
+                                    <div class="col-12 fv-row fv-plugins-icon-container">
+                                        <div class="input-group">
 
+                                            <!--begin::Input group-->
+                                            <div class="form-floating">
+                                                <input asp-for="Email" class="form-control form-control-lg form-control-solid" disabled />
+                                                <label for="FirstName" asp-for="Email">Email:</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+                                            </div>
+                                        
+                                        </div>
+
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                            }
+                            else
+                            {
+                                <!--begin::Input group-->
+                                <div class="row mb-6">
+                                    <!--begin::Col-->
+                                    <div class="col-12 fv-row fv-plugins-icon-container">
+                                        <!--begin::Input group-->
+                                        <div class="form-floating">
+                                            <input asp-for="Email" class="form-control form-control-lg form-control-solid" disabled />
+                                            <label for="FirstName" asp-for="Email">Email:</label>
+                                        </div>
+                                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link text-info">Send verification email</button>
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                            }
+
+                            <!--begin::Input group-->
+                            <div class="row mb-6" data-kt-password-meter="true">
+                                <!--begin::Wrapper-->
+                                <div class="col-12 fv-row fv-plugins-icon-container">
+                                    <!--begin::Input group-->
+                                    <div class="form-floating">
+                                        <input asp-for="Input.NewEmail" class="form-control form-control-lg form-control-solid" placeholder="new email..." />
+                                        <label asp-for="Input.NewEmail">New Email:</label>
+                                    </div>
+                                    <!--end::Input wrapper-->
+                                    <span class="text-danger" asp-validation-for="Input.NewEmail"></span>
+
+                                </div>
+                                <!--end::Wrapper-->
+
+                            </div>
+                            <!--end::Input group-->
+                        </div>
+                        <!--end::Card body-->
+                        <!--begin::Actions-->
+                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                            <button type="submit" class="btn btn-warning btn-sm" id="change-email-button" asp-page-handler="ChangeEmail">
+                                <span class="indicator-label">
+                                    Save Changes
+                                </span>
+                                <span class="indicator-progress">
+                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*     <div class="page-header">
+    <div class="row">
+    <div class="col-sm-12">
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Dashboard </a></li>
+    <li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+    <li class="breadcrumb-item active">Edit Profile</li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <form id="profile-form" method="post" enctype="multipart/form-data">
+    <partial name="_StatusMessage" for="StatusMessage" />
+    <div class="card-box">
+    <div class="row">
+    <div class="col-md-12">
+    <div class="card bg-white">
+    <div class="card-body">
+    <ul class="nav nav-tabs nav-tabs-solid" role="tablist">
+    <li class="nav-item" role="presentation"><a class="nav-link active" href="#solid-tab1" data-bs-toggle="tab" aria-selected="true" role="tab">Change Profile</a></li>
+    <li class="nav-item" role="presentation"><a class="nav-link" href="#solid-tab2" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Change Email</a></li>
+    <li class="nav-item" role="presentation"><a class="nav-link" href="#solid-tab3" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Change Password</a></li>
+    </ul>
+    <div class="tab-content">
+    <div class="tab-pane active show py-5" id="solid-tab1" role="tabpanel">
+    <form id="profile-form" method="post" enctype="multipart/form-data">
+    <div class="profile-img-wrap">
+    @if (Model.Input.ProfilePicture != null)
+    {
+    <img class="inline-block img-preview" src="data:image /*;base64,@(Convert.ToBase64String(Model.Input.ProfilePicture))" alt="user">
+    }
+    else
+    {
+    <img class="inline-block img-preview" src="~/images/dashboard/user.jpg" alt="user">
+    }
+    <div class="fileupload btn">
+    <span class="btn-text">edit</span>
+    <input asp-for="Input.ProfilePicture" class="upload" type="file"
+    onchange="document.querySelector('.img-preview').src = window.URL.createObjectURL(this.files[0])"
+    accept="image/jpeg , image/png , image/jpg">
+    </div>
+    </div>
+    <div class="profile-basic">
+    <div class="row">
+    <div class="col-md-6">
+    <div class="input-block local-forms">
+    <label class="focus-label" asp-for="Input.Username"></label>
+    <input asp-for="Input.Username" class="form-control floating">
+    <span asp-validation-for="Input.Username" class="text-danger"></span>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="input-block local-forms">
+    <label class="focus-label" asp-for="Input.PhoneNumber"></label>
+    <input asp-for="Input.PhoneNumber" class="form-control floating">
+    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="input-block local-forms">
+    <label asp-for="Input.Address"></label>
+    <div class="cal-icon">
+    <input asp-for="Input.Address" class="form-control floating">
+    <span asp-validation-for="Input.Address" class="text-danger"></span>
+    </div>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="input-block local-forms">
+    <label asp-for="Input.Birthdate"></label>
+    <div class="cal-icon">
+    <input asp-for="Input.Birthdate" class="form-control floating datetimepicker">
+    <span asp-validation-for="Input.Birthdate" class="text-danger"></span>
+    </div>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="input-block local-forms">
+    <label asp-for="Input.Occupation"></label>
+    <div class="cal-icon">
+    <input asp-for="Input.Occupation" class="form-control floating">
+    <span asp-validation-for="Input.Occupation" class="text-danger"></span>
+    </div>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="input-block local-forms">
+    <label asp-for="Input.Gender" class="focus-label"></label>
+    <select asp-for="Input.Gender" class="form-control select">
+    <option value="">Select Gendar</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    </select>
+    <span asp-validation-for="Input.Gender" class="text-danger"></span>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="text-center ">
+    <button class="btn btn-primary submit-btn mb-4" type="submit">Save Changes</button>
+    </div>
+    </form>
+    </div>
+    <div class="tab-pane" id="solid-tab2" role="tabpanel">
+    Tab content 2
+    </div>
+    <div class="tab-pane" id="solid-tab3" role="tabpanel">
+    Tab content 3
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </form>
+    <form>
+    <div class="card-box">
+    <h3 class="card-title">Contact Informations</h3>
+    <div class="row">
+    <div class="col-md-12">
+    <div class="input-block local-forms">
+    <label class="focus-label">Address</label>
+    <input type="text" class="form-control floating" value="4487 Snowbird Lane">
+    </div>
+    </div>
+    <div class="col-md-12">
+    <div class="input-block local-forms">
+    <label class="focus-label">Address</label>
+    <input type="text" class="form-control floating" value="4487 Snowbird Lane">
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="text-center ">
+    <button class="btn btn-primary submit-btn mb-4" type="button">Save</button>
+    </div>
+    </form> *@
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

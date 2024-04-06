@@ -64,6 +64,7 @@ namespace DentistClinic.Areas.Identity.Pages.Account.Manage
             /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [RegularExpression(@".*[a-z]+.*", ErrorMessage = "Password must has at lease one lowercase char")]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string NewPassword { get; set; }

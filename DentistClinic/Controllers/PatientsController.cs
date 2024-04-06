@@ -90,7 +90,10 @@ namespace DentistClinic.Controllers
                     return LocalRedirect("~/Identity/Account/AccessDenied");
                 }
             }
-
+            else
+            {
+                return LocalRedirect("~/Identity/Account/Login");
+            }
 
             //get patient 
             Patient model = _unitOfWork.patientRepository.GetById(id);

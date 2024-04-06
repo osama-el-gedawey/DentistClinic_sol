@@ -4,13 +4,12 @@
 
 using System;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using DentistClinic.Core.Models;
+using System.Net.Mail;
 
 namespace DentistClinic.Areas.Identity.Pages.Account
 {
@@ -45,6 +44,19 @@ namespace DentistClinic.Areas.Identity.Pages.Account
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
+            if(user.EmailConfirmed == false)
+            {
+                StatusMessage = "Error , current email must be verified..!!";
+                return Page();
+            }
+
+            var exsisted = await _userManager.FindByEmailAsync(email);
+            if(exsisted != null)
+            {
+				StatusMessage = "Error , This email already exsisted..!!";
+				return Page();
+			}
+
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
@@ -55,7 +67,7 @@ namespace DentistClinic.Areas.Identity.Pages.Account
 
             // In our UI email and user name are one and the same, so when we update the email
             // we need to update the user name.
-            var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
+            var setUserNameResult = await _userManager.SetUserNameAsync(user, new MailAddress(email).User);
             if (!setUserNameResult.Succeeded)
             {
                 StatusMessage = "Error changing user name.";

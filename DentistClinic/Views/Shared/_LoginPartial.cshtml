@@ -3,8 +3,11 @@
 
 @inject SignInManager<ApplicationUser> signInManager
 @inject UserManager<ApplicationUser> userManager
+
 @{
     var applicationUser = await userManager.GetUserAsync(User) ?? new ApplicationUser();
+
+    var Notifications = applicationUser.Patient?.Notifications.OrderByDescending(x => x.Date).ToList() ?? new List<Notification>();
 }
 
 <ul class="navbar-nav">
@@ -17,7 +20,14 @@
                 <div class="d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <!--begin::Avatar-->
                     <div class="me-2">
-                        <img class="rounded-circle img-thumbnail" src="~/assets/images/user.jpg" alt="image" width="50" height="50" />
+                        @if (applicationUser?.Patient?.ProfilePicture != null)
+                        {
+                            <img class="rounded-circle img-thumbnail" src="data:image /*;base64,@(Convert.ToBase64String(applicationUser.Patient.ProfilePicture))" alt="image" style="width:50px; height:50px;" />
+                        }
+                        else
+                        {
+                            <img class="rounded-circle img-thumbnail" src="~/assets/images/user.jpg" alt="image" width="50px" height="50px" />
+                        }
                     </div>
                     <!--end::Avatar-->
                     <div class="personal-info">
@@ -30,6 +40,20 @@
                     @if (await userManager.IsInRoleAsync(applicationUser!, "User"))
                     {
                         <li><a class="dropdown-item" asp-controller="Patients" asp-action="Details" asp-route-id="@applicationUser?.PatientId">Profile</a></li>
+                        <li>
+                            <a class="dropdown-item d-flex justify-content-between align-items-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                <span>Notifications</span>
+                                @if(Notifications.Any(x => x.IsSeened == false)){
+                                    <span class="bg-danger border border-light rounded-circle" id="dotRed" style="width:15px; height:15px;"></span>
+                                }
+                                else
+                                {
+                                    <span class="bg-danger border border-light rounded-circle d-none" id="dotRed" style="width:15px; height:15px;"></span>
+                                }
+
+                        </a>
+                        </li>
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Account Settings</a></li>
                     }
                     else
                     {
@@ -54,3 +78,52 @@ else
     </li>
 }
 </ul>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Notifications</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        @if (Notifications.Count() == 0)
+        {
+            <div class="alert alert-primary" role="alert">
+                Not Have Any Notifications
+            </div>
+        }
+        @foreach (var item in Notifications)
+        {
+            @if (!item.IsSeened)
+            {
+                <div class="toast mb-2" id="notification-@item.Id" role="alert" aria-live="assertive" aria-atomic="true" style="opacity:1 !important; background-color:rgb(64 255 55 / 20%)">
+                    <div class="toast-header">
+                        <i class="bi bi-envelope me-1"></i>
+                        <strong class="me-auto">@item.Title</strong>
+                        <small class="me-2">@item.Date.ToString("dd/MM/yyyy hh:mm tt")</small>
+
+                        <a class="js-confirm-notification" style="cursor:pointer" onclick="ConfrimNotification('notification-@item.Id' , @item.Id)">
+                            <i class="bi bi-check-circle text-success"></i>
+                        </a>
+                    </div>
+                    <div class="toast-body">
+                        @item.Description
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="toast mb-2" id="notification-@item.Id" role="alert" aria-live="assertive" aria-atomic="true" style="opacity:1 !important;">
+                    <div class="toast-header">
+                        <i class="bi bi-envelope me-1"></i>
+                        <strong class="me-auto">@item.Title</strong>
+                        <small class="me-2">@item.Date.ToString("dd/MM/yyyy hh:mm tt")</small>
+                    </div>
+                    <div class="toast-body">
+                        @item.Description
+                    </div>
+                </div>
+            }
+
+        }
+       
+    </div>
+</div>

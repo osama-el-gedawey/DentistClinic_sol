@@ -64,6 +64,8 @@ namespace DentistClinic.Controllers
 					UserName = new MailAddress(model.Email).User,
 					Email = model.Email,
 					PhoneNumber = model.PhoneNumber,
+					EmailConfirmed = true,
+				
 				};
 
 				var result = await _userManager.CreateAsync(applicationUser, model.Password);

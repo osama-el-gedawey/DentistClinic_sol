@@ -116,6 +116,39 @@
             '<i class="bi bi-arrow-right"></i>'
         ],
     });
+
+
+
     
 })(jQuery);
 
+function ConfrimNotification(notificationId, notifyId) {
+
+
+
+    const notificationBox = $(`#${notificationId}`);
+
+    const confirmBtn = notificationBox.find(".js-confirm-notification");
+
+
+    $.get({
+
+        url: `/Home/ConfirmNotification/${notifyId}`,
+        success: function (response) {
+
+            $(confirmBtn).hide();
+
+            notificationBox.css("background-color", "#FFF");
+
+            if (!response.hasNotification) {
+                $("#dotRed").remove();
+            }
+        },
+        error: function () {
+            console.log("Error");
+        }
+
+    });
+
+
+}

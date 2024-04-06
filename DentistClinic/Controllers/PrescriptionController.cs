@@ -51,8 +51,12 @@ namespace DentistClinic.Controllers
                     return LocalRedirect("~/Identity/Account/AccessDenied");
                 }
             }
+            else
+            {
+                return LocalRedirect("~/Identity/Account/Login");
+            }
 
-            
+
 
             if (prescription != null)
             {

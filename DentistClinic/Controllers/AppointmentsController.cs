@@ -119,6 +119,22 @@ namespace DentistClinic.Controllers
                             updatedAppointment.StartTime = appointment.StartTime;
                             updatedAppointment.EndTime = appointment.EndTime;
                             _unitOfWork.appointmentRepository.Update(updatedAppointment);
+
+                            if(updatedAppointment.Patient != null)
+                            {
+                                //Send Notification To Patient
+                                Notification notification = new Notification()
+                                {
+                                    Date = DateTime.Now,
+                                    Title = "Appointment",
+                                    Description = $"Your appoinement at '{updatedAppointment.Start}' has been adjustment to be from '{updatedAppointment.StartTime}' to '{updatedAppointment.EndTime}'",
+                                    PatientId = (int)updatedAppointment.PatientId!
+                                };
+
+                                _unitOfWork.notificationRepository.Create(notification);
+                            }
+
+
                             return Ok(appointment);
                         }
                         else
@@ -148,7 +164,24 @@ namespace DentistClinic.Controllers
             //checi if appointment is already in database
             if (deletedAppointment != null)
             {
+
+                if (deletedAppointment.Patient != null)
+                {
+                    //Send Notification To Patient
+                    Notification notification = new Notification()
+                    {
+                        Date = DateTime.Now,
+                        Title = "Appointment",
+                        Description = $"Sorry, your appoinement at '{deletedAppointment.Start}' has been cancelled , please reserve another appoitment",
+                        PatientId = (int)deletedAppointment.PatientId!
+                    };
+
+                    _unitOfWork.notificationRepository.Create(notification);
+                }
+
                 _unitOfWork.appointmentRepository.Delete(deletedAppointment);
+
+
                 return Json(new {Result = "Ok"});
             }
             else
