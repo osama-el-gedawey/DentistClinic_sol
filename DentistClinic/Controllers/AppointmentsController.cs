@@ -5,6 +5,7 @@ using DentistClinic.Data.Context;
 using DentistClinic.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
 
 namespace DentistClinic.Controllers
 {
@@ -19,6 +20,7 @@ namespace DentistClinic.Controllers
             this._applicationDbContext = applicationDbContext;
         }
 
+
         [HttpGet]
         public IActionResult UpComming()
         {
@@ -26,34 +28,47 @@ namespace DentistClinic.Controllers
         }
         
 
-        [HttpGet]
+        [HttpPost]
         [AjaxOnly]
-        public IActionResult AddAutomaticaly(AutomaticAppointmentViewModel appointment)
+        public IActionResult AddAutomaticaly(AutomaticAppointmentViewModel appointments)
         {
             if (ModelState.IsValid)
             {
-                if (appointment.EndHour > appointment.StartHour)
+
+                if (appointments.EndHour > appointments.StartHour)
                 {
-                    int counter = ((appointment.EndHour.Hour - appointment.StartHour.Hour)*60+
-                        (appointment.EndHour.Minute-appointment.StartHour.Minute)) / appointment.Slot;
-                    if (counter < 1)
+                    if (appointments.Start.Count() < 1)
                     {
-                        //ModelState.AddModelError("", "Cannot Create appointments with This Values");
-                        return BadRequest("Cannot Create appointments with This Values");
+                        return BadRequest("You must select Date to assign");
                     }
-                   
-                    for (int i = 0; i<counter; i++)
+
+                    foreach (var day in appointments.Start)
                     {
-                        Appointment model = new Appointment()
-                        {
-                            Start = appointment.Start,
-                            End = appointment.End.AddDays(1),
-                            StartTime= appointment.StartHour,
-                            EndTime= appointment.StartHour.AddMinutes(appointment.Slot)
-                        };
-                        _unitOfWork.appointmentRepository.Create(model);
-                        appointment.StartHour = appointment.StartHour.AddMinutes(appointment.Slot);
-                    }
+						int counter = ((appointments.EndHour.Hour - appointments.StartHour.Hour) * 60 +
+	                        (appointments.EndHour.Minute - appointments.StartHour.Minute)) / appointments.Slot;
+						if (counter < 1)
+						{
+							//ModelState.AddModelError("", "Cannot Create appointments with This Values");
+							return BadRequest("Cannot Create appointments with This Values");
+						}
+
+                        var appointmentStartHour = appointments.StartHour;
+
+						for (int i = 0; i < counter; i++)
+						{
+							Appointment model = new Appointment()
+							{
+                                Start = day,
+                                End = day.AddDays(1),
+                                StartTime = appointmentStartHour,
+                                EndTime = appointmentStartHour.AddMinutes(appointments.Slot)
+                            };
+							_unitOfWork.appointmentRepository.Create(model);
+							appointmentStartHour = appointmentStartHour.AddMinutes(appointments.Slot);
+						}
+
+					}
+
                     return Json(new { Result = "Ok" });
                 }
                 else
@@ -341,8 +356,17 @@ namespace DentistClinic.Controllers
                         return BadRequest("patient has appointment in this day..!!");
                     }
                 }
-                _unitOfWork.appointmentRepository.ReserveTo(appointment, patient);
-                return Ok();
+
+				if (appointment.Patient != null)
+				{
+					_unitOfWork.appointmentRepository.ReserveTo(appointment, patient);
+					return Ok();
+				}
+                else
+                {
+					return BadRequest("sorry, this appointment just been reserved..!!");
+				}
+
             }
             else
             {

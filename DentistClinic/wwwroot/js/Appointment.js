@@ -20,17 +20,24 @@ $(document).ready(function () {
         const currentAppointment = new Object();
         currentAppointment.startHour = appointmentForm.hour_start.value;
         currentAppointment.endHour = appointmentForm.hour_end.value;
-        currentAppointment.start = moment(appointmentForm.current_date.value).format('YYYY-MM-D');
-        currentAppointment.end = moment(appointmentForm.current_date.value).format('YYYY-MM-D');
         currentAppointment.slot = appointmentForm.slot.value;
 
-        $.get({
+        currentAppointment.start = appointmentForm.current_date.value.toString().split(", ");
+
+        if (currentAppointment.start.length == 1 && currentAppointment.start[0] == '') {
+            currentAppointment.start = [];
+        }
+
+
+        currentAppointment.start = currentAppointment.start.map((appointment) => {
+            return moment(appointment).format('YYYY-MM-D');
+        });
+
+        $.post({
 
             url: "/Appointments/AddAutomaticaly",
             cache: false,
-            data: currentAppointment,
-            dataType: "json",
-            contentType: "application/json",
+            data: currentAppointment, 
             success: function (response) {
                 modal.modal("hide");
                 Swal.fire({
@@ -58,8 +65,6 @@ $(document).ready(function () {
 
 
         });
-
-        console.log(currentAppointment);
 
     });
 
@@ -453,6 +458,7 @@ $(".appointment-end").flatpickr({
 
 
 $(".current-date").flatpickr({
+    mode: "multiple",
     altInput: true,
     altFormat: "F j, Y",
     dateFormat: "Y-m-d",

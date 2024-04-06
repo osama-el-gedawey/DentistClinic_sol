@@ -5,13 +5,8 @@ namespace DentistClinic.Core.ViewModels
 {
     public class AutomaticAppointmentViewModel
     {
-        [CurrentDateCustoumeValidation(ErrorMessage = "Date must be more than today date")]
         [Required]
-        public DateOnly Start { get; set; }
-
-        [CurrentDateCustoumeValidation(ErrorMessage = "Date must be more than today date")]
-        [Required]
-        public DateOnly End { get; set; }
+        public List<DateOnly> Start { get; set; } = new List<DateOnly>();
         [Required]
         public TimeOnly StartHour { get; set; }
         [Required]
