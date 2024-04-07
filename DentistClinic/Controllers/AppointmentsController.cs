@@ -51,7 +51,8 @@ namespace DentistClinic.Controllers
 							//ModelState.AddModelError("", "Cannot Create appointments with This Values");
 							return BadRequest("Cannot Create appointments with This Values");
 						}
-
+                        List<Appointment> appointmentsAtDay = _unitOfWork.appointmentRepository.GetAll()
+                            .Where(app => app.Start == day).ToList();
                         var appointmentStartHour = appointments.StartHour;
 
 						for (int i = 0; i < counter; i++)
@@ -63,9 +64,28 @@ namespace DentistClinic.Controllers
                                 StartTime = appointmentStartHour,
                                 EndTime = appointmentStartHour.AddMinutes(appointments.Slot)
                             };
-							_unitOfWork.appointmentRepository.Create(model);
-							appointmentStartHour = appointmentStartHour.AddMinutes(appointments.Slot);
-						}
+                            bool flag = true;
+                            foreach (Appointment app in appointmentsAtDay)
+                            {
+                                if ((model.StartTime >= app.StartTime && model.StartTime < app.EndTime) ||
+                                    (model.EndTime > app.StartTime && model.EndTime <= app.EndTime) ||
+                                    (model.StartTime < app.StartTime && model.EndTime > app.StartTime))
+                                {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (flag)
+                            {
+                                _unitOfWork.appointmentRepository.Create(model);
+                                appointmentStartHour = appointmentStartHour.AddMinutes(appointments.Slot);
+                            }
+                            else
+                            {
+                                appointmentStartHour = appointmentStartHour.AddMinutes(appointments.Slot);
+                            }
+
+                        }
 
 					}
 
@@ -86,11 +106,21 @@ namespace DentistClinic.Controllers
         [AjaxOnly]
         public IActionResult CreateAppointment(Appointment appointment)
         {
-
+            List<Appointment> appointmentsAtDay = _unitOfWork.appointmentRepository.GetAll()
+                .Where(app => app.Start == appointment.Start).ToList();
             if (ModelState.IsValid)
             {
                 if (appointment.EndTime > appointment.StartTime)
-                {
+                {   
+                    foreach(Appointment app in appointmentsAtDay)
+                    {
+                        if((appointment.StartTime >= app.StartTime &&  appointment.StartTime< app.EndTime)||
+                            (appointment.EndTime > app.StartTime && appointment.EndTime<= app.EndTime)||
+                            (appointment.StartTime < app.StartTime&&appointment.EndTime> app.StartTime))
+                        {
+                            return BadRequest("There is another appointement at same time interval");
+                        }
+                    }
                     _unitOfWork.appointmentRepository.Create(appointment);
                     var appointmentJson = new
                     {
@@ -131,6 +161,10 @@ namespace DentistClinic.Controllers
                        //check if appoinment start time less than end time
                         if (appointment.EndTime > appointment.StartTime)
                         {
+                            if (updatedAppointment.StartTime == appointment.StartTime && updatedAppointment.EndTime == appointment.EndTime)
+                            {
+                                return BadRequest("Select new value to edit..!!");
+                            }
                             updatedAppointment.StartTime = appointment.StartTime;
                             updatedAppointment.EndTime = appointment.EndTime;
                             _unitOfWork.appointmentRepository.Update(updatedAppointment);
