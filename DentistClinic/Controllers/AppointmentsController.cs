@@ -264,15 +264,10 @@ namespace DentistClinic.Controllers
         public IActionResult GetAvaillableAppointments(int patientId)
         {
             var patient = _unitOfWork.patientRepository.GetById(patientId);
-            var patientReservedAppointments = _unitOfWork.appointmentRepository.UpComming().Where(x => x.PatientId == patient.Id).Select(x => x.Id).ToList();            
-            
-            var appointments = _unitOfWork.appointmentRepository.UpComming().Where(x => {
-
-                DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-                int result = DateTime.Compare(DateTime.Parse(today.ToString()), DateTime.Parse(x.Start.ToString()));
-                return result == 0;
-                
-            } ).Select(x => new
+            var patientReservedAppointments = _unitOfWork.appointmentRepository.UpComming().Where(x => x.PatientId == patient.Id).Select(x => x.Id).ToList();
+            DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+            var appointments = _unitOfWork.appointmentRepository.UpComming()
+                .Where(x => x.Start==today&&(x.PatientId==null || x.PatientId == patient.Id)).Select(x => new
             {
                 id = x.Id,
                 title = $"{x.StartTime} to {x.EndTime}",
@@ -310,7 +305,7 @@ namespace DentistClinic.Controllers
             var patient = _unitOfWork.patientRepository.GetById(patientId);
             var patientReservedAppointments = _unitOfWork.appointmentRepository.UpComming().Where(x => x.PatientId == patient.Id).Select(x => x.Id).ToList();
             var appointments = _unitOfWork.appointmentRepository.UpComming()
-                .Where(x => DateTime.Compare(DateTime.Parse(x.Start.ToString()) , DateTime.Parse(dateStr.ToString())) == 0).Select(x => new
+                .Where(x => (DateTime.Compare(DateTime.Parse(x.Start.ToString()) , DateTime.Parse(dateStr.ToString())) == 0) && (x.PatientId==null || x.PatientId == patient.Id)).Select(x => new
                 {
                 id = x.Id,
                 title = $"{x.StartTime} to {x.EndTime}",
@@ -391,7 +386,7 @@ namespace DentistClinic.Controllers
                     }
                 }
 
-				if (appointment.Patient != null)
+				if (appointment.Patient == null)
 				{
 					_unitOfWork.appointmentRepository.ReserveTo(appointment, patient);
 					return Ok();

@@ -254,7 +254,7 @@ namespace DentistClinic.Controllers
 
         [AjaxOnly]
         [HttpGet]
-        [Authorize(Roles = "Doctor , User")]
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             MedicalHistory model = _unitOfWork.medicalHistoryRepository.GetById(id);

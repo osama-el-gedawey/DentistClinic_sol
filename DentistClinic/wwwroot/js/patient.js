@@ -55,7 +55,7 @@ $(document).ready(function () {
                 "name": "FullName",
                 "className": "d-flex align-items-center",
                 "render": function (data, type, row) {
-                    console.log(row.profilePicture);
+                    //console.log(row.profilePicture);
                     return `
                             <!--begin:: Patient -->
                             <div class="symbol  symbol-50px overflow-hidden me-3">
@@ -482,14 +482,20 @@ $(document).ready(function () {
                 //hadle personal data
                 $(".patient-name").text(response.patient.fullName);
                 $(".patient-phone").text(response.patient.phoneNumber);
-                $(".patient-image").attr("src", response.profilePicture != null ? `data:image /*;base64,@(Convert.ToBase64String(${response.profilePicture}))` : "../assets/images/user.jpg");
+               // $(".patient-image").attr("src", response.profilePicture != null ? `data:image /*;base64,@(Convert.ToBase64String(${response.profilePicture}))` : "../assets/images/user.jpg");
+                if (response.patient.profilePicture) {
 
+                    $(".patient-image").attr("src", `data:image /*;base64,${response.patient.profilePicture}`);
+                }
+                else {
+                    $(".patient-image").attr("src", "/assets/images/user.jpg");
+                }
 
                 getReservations(patientId);
                 modal.modal("show");
             },
             error: function (response) {
-                console.log(response);
+                //console.log(response);
                 Swal.fire({
                     text: `${response.responseText}`,
                     icon: "warning",
@@ -525,14 +531,14 @@ $(document).ready(function () {
         selectBtn.parent(".appointment-box-date").css("border", "1px dashed #080");
         $(".js-reserve-appointment-patient").attr("data-appointment", appointmentId);
         selectedAppointment = selectBtn.parent(".appointment-box-date");
-        console.log(selectedAppointment);
+        //console.log(selectedAppointment);
     });
 
     $("body").delegate(".js-cancel-appointment", "click", function (event) {
         let cancelBtn = $(this);
         let appointmentId = $(cancelBtn).parent(".appointment-box-date").attr("data-id");
         let patientId = $(".js-reserve-appointment-patient").attr("data-patient");
-        console.log(appointmentId);
+        //console.log(appointmentId);
         //handl confirmation sweetAlert2
         Swal.fire({
             title: 'Are you sure?',
@@ -563,10 +569,10 @@ $(document).ready(function () {
                         }).then(() => {
                             //
                             let appointmentBox = cancelBtn.parent(".appointment-box-date");
-                            console.log(appointmentBox);
+                            //console.log(appointmentBox);
                             appointmentBox.find("button").removeClass("js-cancel-appointment")
                                 .addClass("js-select-appointment");
-                            console.log(appointmentBox.find("button"));
+                            //console.log(appointmentBox.find("button"));
                             appointmentBox.find("button").removeClass("btn-color-danger btn-active-color-danger")
                                 .addClass("btn-color-primay btn-active-color-primary");
                             appointmentBox.find("button").text("Select");
@@ -602,7 +608,7 @@ $(document).ready(function () {
         let appointmentId = $(".js-reserve-appointment-patient").attr("data-appointment");
         let patientId = $(".js-reserve-appointment-patient").attr("data-patient");
 
-        console.log(appointmentId, patientId);
+        //console.log(appointmentId, patientId);
 
         if (appointmentId && patientId) {
             $(".js-reserve-appointment-patient").attr("disabled", "disabled").attr("data-kt-indicator", "on");
@@ -680,7 +686,7 @@ function getReservations(patientId) {
         dataType: "json",
         contentType: "application/json",
         success: function (response) {
-            console.log(response);
+            //console.log(response);
             let cartona = ``;
             Array.from(response.appointments).forEach((appointment) => {
                 cartona += `
@@ -785,10 +791,11 @@ $(".appointment-date-filter").flatpickr({
                 $(".appointment-box").html(cartona);
                 $(".js-reserve-appointment-patient").attr("data-patient", patientId);
                 $(".js-reserve-appointment-patient").attr("data-appointment", "");
-
+                //console.log(response);
+               
             },
             error: function (response) {
-                console.log(response);
+                //console.log(response);
                 Swal.fire({
                     text: `${response.responseText}`,
                     icon: "warning",
